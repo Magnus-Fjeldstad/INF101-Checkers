@@ -1,16 +1,23 @@
 package no.uib.inf101.sem2;
 
-import no.uib.inf101.sem2.view.SampleView;
+import no.uib.inf101.sem2.grid.CellPosition;
+import no.uib.inf101.sem2.model.CheckersModel;
+import no.uib.inf101.sem2.model.ChekersBoard;
+import no.uib.inf101.sem2.view.CheckersView;
 
 import javax.swing.JFrame;
 
 public class Main {
   public static void main(String[] args) {
-    SampleView view = new SampleView();
+    ChekersBoard board = new ChekersBoard(8, 8);
+    CheckersModel model = new CheckersModel(board);
 
+
+    CheckersView view = new CheckersView(model);
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.setTitle("INF101");
+    frame.setResizable(false);
+    frame.setTitle("Checkers");
     frame.setContentPane(view);
     frame.pack();
     frame.setVisible(true);
