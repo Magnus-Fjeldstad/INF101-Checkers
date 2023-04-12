@@ -29,6 +29,6 @@ public abstract class AbstractPiece {
      * @return the cellPosition
      */
     public CellPosition getCellPosition() {
-        return this.pos;
+        return pos;
     }
 }

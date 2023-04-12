@@ -10,6 +10,9 @@ public class PieceFactory implements IPieceFactory{
         if(pieceType == 'K'){
             return new King(team);
         }
+        if(pieceType == '-'){
+            return new EmptyPiece(team);
+        }
         throw new IllegalArgumentException("Piece does not exist");
     }
     
