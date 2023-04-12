@@ -8,6 +8,7 @@ import no.uib.inf101.sem2.view.ViewableCheckersModel;
 public class CheckersModel implements ViewableCheckersModel {
     ChekersBoard board;
 
+
     public CheckersModel(ChekersBoard board){
         this.board = board;
     }
@@ -19,7 +20,5 @@ public class CheckersModel implements ViewableCheckersModel {
     @Override
     public Iterable<GridCell<Character>> getTilesOnBoard() {
         return board;    
-    }
-
-     
+    }    
 }

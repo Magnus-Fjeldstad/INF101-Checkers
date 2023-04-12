@@ -5,7 +5,10 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import javax.swing.JPanel;
+
+import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
+import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
 
 public class CheckersView extends JPanel {
     //Feltvariabler
@@ -30,11 +33,34 @@ public class CheckersView extends JPanel {
       Graphics2D g2 = (Graphics2D) g;
       drawGame(g2);
     }
-
+    /**
+     * DrawsTheGame
+     * @param g2
+     * 
+     */
     public void drawGame(Graphics2D g2){
-        Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth(), this.getHeight());
+        Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
         drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
     }
+    
+
+    // public void drawGame(Graphics2D g2){
+    //     Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth(), this.getHeight());
+    //     CellPositionToPixelConverter converter = new CellPositionToPixelConverter(rectangle, view.getDimension(), 0);
+    //     Iterable<GridCell<Character>> cells = view.getTilesOnBoard();
+    //     int rows = view.getDimension().rows();
+    //     int cols = view.getDimension().columns();
+    //     for (int i = 0; i < rows; i++) {
+    //         for (int j = 0; j < cols; j++) {
+    //             char color = ((i + j) % 2 == 0) ? 'w' : 'b';
+    //             Color cellColor = colorTheme.getCellColor(color);
+    //             Rectangle2D rect = converter.getBoundsForCell(new CellPosition(i, j));
+    //             g2.setColor(cellColor);
+    //             g2.fill(rect);
+    //         }
+    //     }
+    // }
+
 
     /**
      * 

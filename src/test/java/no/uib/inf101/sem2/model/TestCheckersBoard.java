@@ -15,9 +15,9 @@ public class TestCheckersBoard {
         board.set(new CellPosition(2, 0), 'r');
         board.set(new CellPosition(2, 3), 'b');
         String expected = String.join("\n", new String[] {
-                "g--y",
-                "----",
-                "r--b"
+                "gwby",
+                "wbwb",
+                "rwbb"
         });
         assertEquals(expected, board.prettyString());
     }

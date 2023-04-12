@@ -1,6 +1,5 @@
 package no.uib.inf101.sem2;
 
-import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.model.CheckersModel;
 import no.uib.inf101.sem2.model.ChekersBoard;
 import no.uib.inf101.sem2.view.CheckersView;
@@ -11,7 +10,10 @@ public class Main {
   public static void main(String[] args) {
     ChekersBoard board = new ChekersBoard(8, 8);
     CheckersModel model = new CheckersModel(board);
-
+    
+    board.drawCheckersBoard();
+    board.setInitalBoard();
+    
 
     CheckersView view = new CheckersView(model);
     JFrame frame = new JFrame();

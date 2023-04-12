@@ -10,6 +10,11 @@ public class DefaultColorTheme implements ColorTheme {
             case '-' -> Color.black;
             case 'w' -> Color.white;
             case 'b' -> Color.black;
+
+            //CheckersPieces
+            case 'P' -> Color.blue;
+            case 'K' -> Color.pink;
+        
         
             default -> throw new IllegalArgumentException("No available color for '" + c + "'");            
             };

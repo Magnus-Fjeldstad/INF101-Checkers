@@ -7,7 +7,6 @@ public class ChekersBoard extends Grid<Character>{
     CheckersModel model;
     public ChekersBoard(int rows, int cols) {
         super(rows, cols,  '-');
-        drawCheckersBoard();
     }
 
     
@@ -39,5 +38,9 @@ public class ChekersBoard extends Grid<Character>{
                 }
             }          
         }
-    }   
+    }
+    
+    public void setInitalBoard() {
+        this.set(new CellPosition(0, 0), 'P');
+    }
 }

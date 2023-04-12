@@ -3,6 +3,7 @@ package no.uib.inf101.sem2.view;
 import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.grid.GridDimension;
 
+
 public interface ViewableCheckersModel {
     /**
      * 
@@ -16,4 +17,5 @@ public interface ViewableCheckersModel {
      */
 
     Iterable<GridCell<Character>> getTilesOnBoard();
+
 }
