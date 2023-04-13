@@ -13,7 +13,7 @@ public class TestDefaultColorTheme {
         ColorTheme colors = new DefaultColorTheme();
         assertEquals(Color.white, colors.getBackgroundColor());
         assertEquals(Color.white, colors.getFrameColor());
-        assertEquals(Color.darkGray, colors.getCellColor('-'));
+        assertEquals(Color.black, colors.getCellColor('-'));
         assertThrows(IllegalArgumentException.class, () -> colors.getCellColor('\n'));
 
     }

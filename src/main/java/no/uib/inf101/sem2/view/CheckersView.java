@@ -9,6 +9,8 @@ import javax.swing.JPanel;
 
 
 import no.uib.inf101.sem2.grid.GridCell;
+import no.uib.inf101.sem2.model.CheckersBoard;
+import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
 
 
 public class CheckersView extends JPanel {
@@ -16,7 +18,7 @@ public class CheckersView extends JPanel {
     ViewableCheckersModel view;
     ColorTheme colorTheme;
 
-    public CheckersView(ViewableCheckersModel view) {
+    public CheckersView(ViewableCheckersModel view, CheckersBoard board) {
         this.view = view;
         this.colorTheme = new DefaultColorTheme();
         this.setBackground(Color.white);
@@ -41,6 +43,8 @@ public class CheckersView extends JPanel {
      * 
      */
     public void drawGame(Graphics2D g2) {
+        Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth() , this.getHeight() );
+        drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
     }
 
     /**
@@ -51,16 +55,12 @@ public class CheckersView extends JPanel {
      * @param converter Converts a CellPosition to a Pixel
      * @param CT        Color Theme set in DefualtColorTheme
      */
-    private static void drawCells(Graphics2D g, Iterable<GridCell<Character>> cell, CellPositionToPixelConverter converter, ColorTheme CT) {
-        for (GridCell<Character> gridCell : cell) {
-            Color color = CT.getCellColor(gridCell.value());
+    private static void drawCells(Graphics2D g, Iterable<GridCell<AbstractPiece>> cell, CellPositionToPixelConverter converter, ColorTheme CT) {
+        for (GridCell<AbstractPiece> gridCell : cell) {
+            Color color = Color.black;
             Rectangle2D rect = converter.getBoundsForCell(gridCell.pos());
             g.setColor(color);
             g.fill(rect);
-
-            if(gridCell.value()!= 'w' || gridCell.value() != 'b'){
-                
-            }
         }
     }
 }

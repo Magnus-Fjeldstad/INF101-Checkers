@@ -5,9 +5,9 @@ import no.uib.inf101.sem2.grid.Grid;
 import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.model.checkerspiece.EmptyPiece;
 
-public class ChekersBoard extends Grid<AbstractPiece>{
+public class CheckersBoard extends Grid<AbstractPiece>{
     CheckersModel model;
-    public ChekersBoard(int rows, int cols) {
+    public CheckersBoard(int rows, int cols) {
         super(rows, cols, new EmptyPiece('-'));
     }
 
@@ -27,5 +27,7 @@ public class ChekersBoard extends Grid<AbstractPiece>{
         }
         return stringBoard;
     }
+
+    
 
 }

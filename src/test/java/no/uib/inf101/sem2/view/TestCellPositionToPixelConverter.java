@@ -2,7 +2,7 @@ package no.uib.inf101.sem2.view;
 
 import org.junit.jupiter.api.Test;
 import no.uib.inf101.sem2.grid.GridDimension;
-import no.uib.inf101.sem2.model.ChekersBoard;
+import no.uib.inf101.sem2.model.CheckersBoard;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.awt.geom.Rectangle2D;
 import no.uib.inf101.sem2.grid.CellPosition;
@@ -10,7 +10,7 @@ import no.uib.inf101.sem2.grid.CellPosition;
 public class TestCellPositionToPixelConverter {
     @Test
     public void sanityTest() {
-    GridDimension gd = new ChekersBoard(3, 4);
+    GridDimension gd = new CheckersBoard(3, 4);
     CellPositionToPixelConverter converter = new CellPositionToPixelConverter(
         new Rectangle2D.Double(29, 29, 340, 240), gd, 30
     );
