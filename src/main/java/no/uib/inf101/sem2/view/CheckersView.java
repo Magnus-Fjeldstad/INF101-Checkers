@@ -9,7 +9,6 @@ import javax.swing.JPanel;
 
 
 import no.uib.inf101.sem2.grid.GridCell;
-import no.uib.inf101.sem2.model.CheckersBoard;
 import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
 
 
@@ -18,7 +17,7 @@ public class CheckersView extends JPanel {
     ViewableCheckersModel view;
     ColorTheme colorTheme;
 
-    public CheckersView(ViewableCheckersModel view, CheckersBoard board) {
+    public CheckersView(ViewableCheckersModel view) {
         this.view = view;
         this.colorTheme = new DefaultColorTheme();
         this.setBackground(Color.white);
@@ -57,7 +56,7 @@ public class CheckersView extends JPanel {
      */
     private static void drawCells(Graphics2D g, Iterable<GridCell<AbstractPiece>> cell, CellPositionToPixelConverter converter, ColorTheme CT) {
         for (GridCell<AbstractPiece> gridCell : cell) {
-            Color color = Color.black;
+            Color color = CT.getCellColor(gridCell.value().getTeam());
             Rectangle2D rect = converter.getBoundsForCell(gridCell.pos());
             g.setColor(color);
             g.fill(rect);

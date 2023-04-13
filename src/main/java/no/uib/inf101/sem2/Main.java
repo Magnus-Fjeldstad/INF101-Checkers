@@ -15,21 +15,23 @@ public class Main {
     model.outPutBoard();
     System.out.println("\n");
     model.move(new CellPosition(5, 2), new CellPosition(4, 3));
-    model.move(new CellPosition(4, 3), new CellPosition(3, 4));
+    model.move(new CellPosition(2, 1), new CellPosition(3, 2));
+    model.move(new CellPosition(4, 3), new CellPosition(2, 1));
+    model.move(new CellPosition(1, 0), new CellPosition(3, 2));
     System.out.println("\n");
     model.outPutBoard();
 
     model.move(new CellPosition(2, 1), new CellPosition(3, 0));
     model.outPutBoard();
 
-    // CheckersView view = new CheckersView(model);
+    CheckersView view = new CheckersView(model);
 
-    // JFrame frame = new JFrame();
-    // frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    // frame.setResizable(false);
-    // frame.setTitle("Checkers");
-    // frame.setContentPane(view);
-    // frame.pack();
-    // frame.setVisible(true);
+    JFrame frame = new JFrame();
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.setResizable(false);
+    frame.setTitle("Checkers");
+    frame.setContentPane(view);
+    frame.pack();
+    frame.setVisible(true);
   }
 }
