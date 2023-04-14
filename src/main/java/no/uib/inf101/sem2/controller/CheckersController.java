@@ -12,8 +12,6 @@ public class CheckersController implements MouseListener {
     private final CheckersView checkersView;
 
     int moveTurn;
-    int yGrid;
-    int xGrid;
     CellPosition oldPos;
     CellPosition newPos;
 
@@ -28,7 +26,6 @@ public class CheckersController implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        //TODO
     }
 
 
@@ -53,7 +50,10 @@ public class CheckersController implements MouseListener {
         int xCordGrid = (int) Math.ceil(yCoordinat / 100);
         newPos = new CellPosition(xCordGrid, yCordGrid);
         System.out.println("this is the newPos" + newPos.toString());
-        controller.move(oldPos, newPos);
+        if(controller.isLegalMove(oldPos, newPos)){
+            controller.move(oldPos, newPos);
+        }
+        
         checkersView.repaint();   
     }
 
