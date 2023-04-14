@@ -10,9 +10,9 @@ public class DefaultColorTheme implements ColorTheme {
     public Color getCellColor(char c) {
         Color color = switch (c){
             //BoardColor
-            case '-' -> Color.lightGray;
-            case 'w' -> Color.white;
-            case 'b' -> Color.black;
+            case '-' -> new Color(0, 0, 0,0);
+            case 'w' -> Color.blue;
+            case 'b' -> Color.pink;
 
             //CheckersPieces
             case 'P' -> Color.blue;

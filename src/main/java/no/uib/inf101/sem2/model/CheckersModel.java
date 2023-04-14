@@ -1,5 +1,6 @@
 package no.uib.inf101.sem2.model;
 
+import no.uib.inf101.sem2.controller.ControllableCheckersPiece;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.grid.GridDimension;
@@ -8,7 +9,7 @@ import no.uib.inf101.sem2.model.checkerspiece.Pawn;
 import no.uib.inf101.sem2.model.checkerspiece.PieceFactory;
 import no.uib.inf101.sem2.view.ViewableCheckersModel;
 
-public class CheckersModel implements ViewableCheckersModel {
+public class CheckersModel implements ViewableCheckersModel, ControllableCheckersPiece {
     CheckersBoard board;
     PieceFactory factory;
     int turn;
@@ -24,6 +25,9 @@ public class CheckersModel implements ViewableCheckersModel {
         return board;
     }
 
+    /**
+     * Sets the inital position of the board
+     */
     public void setInitalBoard() {
         for (int i = 0; i < board.rows(); i++) {
             // draws the white pieces
@@ -148,7 +152,6 @@ public class CheckersModel implements ViewableCheckersModel {
                 int capturedCol = oldPos.col() + ((newPos.col() - oldPos.col()) / 2);
                 board.set(new CellPosition(capturedRow, capturedCol), factory.getNext('-', '-'));
             }
-
             // Move piece to new position and update turn count
             board.set(newPos, board.get(oldPos));
             board.set(oldPos, factory.getNext('-', '-'));

@@ -12,6 +12,10 @@ public interface ViewableCheckersModel {
      */
     GridDimension getDimension();
 
+    /**
+     * 
+     * @return returns the tiles on the board
+     */
     Iterable<GridCell<AbstractPiece>> getTilesOnBoard();
 
 }

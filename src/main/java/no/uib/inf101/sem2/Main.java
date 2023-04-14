@@ -1,6 +1,6 @@
 package no.uib.inf101.sem2;
 
-import no.uib.inf101.sem2.grid.CellPosition;
+import no.uib.inf101.sem2.controller.CheckersController;
 import no.uib.inf101.sem2.model.CheckersModel;
 import no.uib.inf101.sem2.model.CheckersBoard;
 import no.uib.inf101.sem2.view.CheckersView;
@@ -13,17 +13,6 @@ public class Main {
     CheckersModel model = new CheckersModel(board);
     model.setInitalBoard();
     model.outPutBoard();
-    System.out.println("\n");
-    model.move(new CellPosition(5, 2), new CellPosition(4, 3));
-    model.move(new CellPosition(2, 1), new CellPosition(3, 2));
-    model.move(new CellPosition(4, 3), new CellPosition(2, 1));
-    model.move(new CellPosition(1, 0), new CellPosition(3, 2));
-    System.out.println("\n");
-    model.outPutBoard();
-
-    model.move(new CellPosition(2, 1), new CellPosition(3, 0));
-    model.outPutBoard();
-
     CheckersView view = new CheckersView(model);
 
     JFrame frame = new JFrame();
@@ -32,6 +21,7 @@ public class Main {
     frame.setTitle("Checkers");
     frame.setContentPane(view);
     frame.pack();
+    frame.addMouseListener(new CheckersController(model, view));
     frame.setVisible(true);
   }
 }
