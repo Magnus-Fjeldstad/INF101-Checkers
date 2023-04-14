@@ -22,49 +22,39 @@ public class CheckersController implements MouseListener {
         this.checkersView = checkersView;
         checkersView.addMouseListener(this);
         checkersView.setFocusable(true);
-        this.moveTurn = 1;
-        this.yGrid = 0;
-        this.xGrid = 0;
+        this.oldPos = new CellPosition(0, 0);
         this.newPos = new CellPosition(0, 0);
     }
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int x = e.getX();
-        int y = e.getY();
-        this.moveTurn += e.getClickCount();
-        this.yGrid = (int) Math.ceil(x / 100);
-        this.xGrid = (int) Math.ceil(y / 100);
-        createNewCellPosition();
-        controller.move(oldPos, newPos);
-
-        checkersView.repaint();
+        //TODO
     }
 
-    public void createNewCellPosition() {
-        if (moveTurn % 2 == 0) {
-            this.oldPos = new CellPosition(xGrid, yGrid);
-        }
-        if (moveTurn % 2 == 1) {
-            this.newPos = new CellPosition(xGrid, yGrid);
-        }
-        printCellPositionAsString();
-    }
-
-    public void printCellPositionAsString() {
-        if (oldPos != null && newPos != null) {
-            System.out.println("oldPos =" + oldPos.toString());
-            System.out.println("newPos =" + newPos.toString());
-        }
-
-    }
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int xCoordinat = e.getX();
+        int yCoordinat = e.getY();
+
+        int yCordGrid = (int) Math.ceil(xCoordinat / 100);
+        int xCordGrid = (int) Math.ceil(yCoordinat / 100);
+
+        oldPos = new CellPosition(xCordGrid, yCordGrid);
+        System.out.println("this is the oldPos" + oldPos.toString());
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
+        int xCoordinat = e.getX();
+        int yCoordinat = e.getY();
+
+        int yCordGrid = (int) Math.ceil(xCoordinat / 100);
+        int xCordGrid = (int) Math.ceil(yCoordinat / 100);
+        newPos = new CellPosition(xCordGrid, yCordGrid);
+        System.out.println("this is the newPos" + newPos.toString());
+        controller.move(oldPos, newPos);
+        checkersView.repaint();   
     }
 
     @Override

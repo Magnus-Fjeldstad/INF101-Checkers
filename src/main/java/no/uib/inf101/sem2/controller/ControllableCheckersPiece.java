@@ -9,7 +9,7 @@ public interface ControllableCheckersPiece {
      * @param newPos the new Position
      * @return
      */
-    public void move(CellPosition oldPos, CellPosition newPos);
+    public boolean move(CellPosition oldPos, CellPosition newPos);
 
     public boolean isLegalMove(CellPosition oldPos, CellPosition newPos);
 }
