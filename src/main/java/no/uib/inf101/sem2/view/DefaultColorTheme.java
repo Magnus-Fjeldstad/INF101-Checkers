@@ -9,14 +9,14 @@ public class DefaultColorTheme implements ColorTheme {
     @Override
     public Color getCellColor(char c) {
         Color color = switch (c){
-            //BoardColor
+            //CheckersPieceColors
             case '-' -> new Color(0, 0, 0,0);
             case 'w' -> Color.blue;
             case 'b' -> Color.pink;
 
-            //CheckersPieces
+            //KingPromoteColors
             case 'P' -> Color.blue;
-            case 'K' -> Color.pink;
+            case 'K' -> Color.YELLOW;
         
         
             default -> throw new IllegalArgumentException("No available color for '" + c + "'");            

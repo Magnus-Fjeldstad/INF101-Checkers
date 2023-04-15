@@ -11,12 +11,15 @@ import no.uib.inf101.sem2.view.ViewableCheckersModel;
 public class CheckersModel implements ViewableCheckersModel, ControllableCheckersPiece {
     CheckersBoard board;
     PieceFactory factory;
+    GameState gameState;
 
     private char currentPlayer = 'w';
 
     public CheckersModel(CheckersBoard board) {
         this.board = board;
         this.factory = new PieceFactory();
+        this.gameState = GameState.ACTIVE_GAME;
+
     }
 
     @Override
@@ -159,18 +162,19 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             // Move piece to new position and update turn count
             board.set(newPos, board.get(oldPos));
             board.set(oldPos, factory.getNext('-', '-'));
-
             // Switch players
             currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
 
             System.out.println("Current player: " + currentPlayer);
+            checkIfGameOver();
             promoteToKing();
+            System.out.println(this.gameState);
             return true;
         }
         return false;
     }
 
-    public void promoteToKing(){
+    private void promoteToKing(){
         for (int i = 0; i < board.cols(); i++) {
             if(board.get(new CellPosition(0, i)).getTeam()== 'w'){
                 board.set(new CellPosition(0, i), factory.getNext('K', 'w'));
@@ -184,8 +188,30 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
     }
 
+    private void checkIfGameOver() {
+        boolean whitePieceExist = false;
+        boolean blackPieceExist = false;
+        for (GridCell<AbstractPiece> gridCell : board) {
+            if(gridCell.value().getTeam()=='w'){
+                whitePieceExist = true;
+            }
+        }
+        for (GridCell<AbstractPiece> gridCell : board) {
+            if(gridCell.value().getTeam()=='b'){
+                blackPieceExist = true;
+            }
+        }
+        if(!whitePieceExist || !blackPieceExist){
+            this.gameState = GameState.GAME_OVER;
+        }
+    }
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
         return board;
+    }
+
+    @Override
+    public GameState getGameState() {
+        return this.gameState;
     }
 }

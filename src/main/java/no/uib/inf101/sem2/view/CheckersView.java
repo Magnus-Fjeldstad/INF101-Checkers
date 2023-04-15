@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 
 
 import no.uib.inf101.sem2.grid.GridCell;
+import no.uib.inf101.sem2.model.GameState;
 import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
 
 
@@ -19,8 +20,8 @@ public class CheckersView extends JPanel {
     ColorTheme colorTheme;
     
     //CheckersBoard size
-    private static int SIZE = 8;
-    private int SQUARE_SIZE = 800/8;
+    private static final int SIZE = 8;
+    private static final int SQUARE_SIZE = 800/8;
     
     
 
@@ -68,8 +69,11 @@ public class CheckersView extends JPanel {
      * @param g2
      */
     public void drawGame(Graphics2D g2) {
-        Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth() , this.getHeight() );
-        drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
+        if(view.getGameState() != GameState.GAME_OVER){
+            Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth() , this.getHeight() );
+            drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
+        }
+        //TODO Draw a screen if gameover
     }
 
     /**
@@ -89,9 +93,16 @@ public class CheckersView extends JPanel {
             double centerY = rect.getCenterY();
             double radius = rect.getWidth()/2;
             //Converts the rectangle to a circle
+            
             Ellipse2D circle = new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
             g.setColor(color);
             g.fill(circle);
+            if((gridCell.value().getPieceType())== 'K'){
+                color = Color.yellow;
+                g.setColor(color);
+                g.fill(circle);
+            }
+
         }
     }
 }
