@@ -1,4 +1,4 @@
-package no.uib.inf101.sem2.model.checkerspiece;
+package no.uib.inf101.sem2.checkers.model.checkerspiece;
 
 import no.uib.inf101.sem2.grid.CellPosition;
 

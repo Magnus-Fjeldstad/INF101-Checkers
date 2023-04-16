@@ -1,7 +1,7 @@
-package no.uib.inf101.sem2.view;
+package no.uib.inf101.sem2.checkers.view;
 import java.awt.Color;
 
-import no.uib.inf101.sem2.model.CheckersBoard;
+import no.uib.inf101.sem2.checkers.model.CheckersBoard;
 
 public class DefaultColorTheme implements ColorTheme {
     CheckersBoard board;

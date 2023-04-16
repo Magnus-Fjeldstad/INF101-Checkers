@@ -2,6 +2,9 @@ package no.uib.inf101.sem2.view;
 
 import org.junit.jupiter.api.Test;
 
+import no.uib.inf101.sem2.checkers.view.ColorTheme;
+import no.uib.inf101.sem2.checkers.view.DefaultColorTheme;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 

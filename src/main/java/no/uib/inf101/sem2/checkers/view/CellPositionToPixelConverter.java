@@ -1,4 +1,4 @@
-package no.uib.inf101.sem2.view;
+package no.uib.inf101.sem2.checkers.view;
 
 import java.awt.geom.Rectangle2D;
 import no.uib.inf101.sem2.grid.GridDimension;

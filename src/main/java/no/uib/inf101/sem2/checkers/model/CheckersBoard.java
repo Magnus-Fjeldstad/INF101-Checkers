@@ -1,9 +1,9 @@
-package no.uib.inf101.sem2.model;
+package no.uib.inf101.sem2.checkers.model;
 
+import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
+import no.uib.inf101.sem2.checkers.model.checkerspiece.EmptyPiece;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.Grid;
-import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
-import no.uib.inf101.sem2.model.checkerspiece.EmptyPiece;
 
 public class CheckersBoard extends Grid<AbstractPiece>{
     CheckersModel model;

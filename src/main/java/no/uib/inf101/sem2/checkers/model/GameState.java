@@ -1,4 +1,4 @@
-package no.uib.inf101.sem2.model;
+package no.uib.inf101.sem2.checkers.model;
 
 public enum GameState {
     ACTIVE_GAME,

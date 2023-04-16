@@ -1,4 +1,4 @@
-package no.uib.inf101.sem2.controller;
+package no.uib.inf101.sem2.checkers.controller;
 
 import no.uib.inf101.sem2.grid.CellPosition;
 

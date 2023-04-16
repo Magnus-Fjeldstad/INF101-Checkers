@@ -1,4 +1,4 @@
-package no.uib.inf101.sem2.model.checkerspiece;
+package no.uib.inf101.sem2.checkers.model.checkerspiece;
 
 public class King extends AbstractPiece {
     public King(char team){

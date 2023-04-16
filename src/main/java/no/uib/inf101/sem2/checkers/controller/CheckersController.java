@@ -1,10 +1,10 @@
-package no.uib.inf101.sem2.controller;
+package no.uib.inf101.sem2.checkers.controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import no.uib.inf101.sem2.checkers.view.CheckersView;
 import no.uib.inf101.sem2.grid.CellPosition;
-import no.uib.inf101.sem2.view.CheckersView;
 
 public class CheckersController implements MouseListener {
 

@@ -1,12 +1,12 @@
-package no.uib.inf101.sem2.model;
+package no.uib.inf101.sem2.checkers.model;
 
-import no.uib.inf101.sem2.controller.ControllableCheckersPiece;
+import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
+import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
+import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
+import no.uib.inf101.sem2.checkers.view.ViewableCheckersModel;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.grid.GridDimension;
-import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
-import no.uib.inf101.sem2.model.checkerspiece.PieceFactory;
-import no.uib.inf101.sem2.view.ViewableCheckersModel;
 
 public class CheckersModel implements ViewableCheckersModel, ControllableCheckersPiece {
     CheckersBoard board;
@@ -19,7 +19,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         this.board = board;
         this.factory = new PieceFactory();
         this.gameState = GameState.ACTIVE_GAME;
-
     }
 
     @Override
@@ -214,4 +213,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     public GameState getGameState() {
         return this.gameState;
     }
+
+
 }

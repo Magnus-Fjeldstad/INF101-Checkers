@@ -1,28 +1,28 @@
-package no.uib.inf101.sem2.view;
+package no.uib.inf101.sem2.checkers.view;
 
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
+import no.uib.inf101.sem2.checkers.model.GameState;
+import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.grid.GridCell;
-import no.uib.inf101.sem2.model.GameState;
-import no.uib.inf101.sem2.model.checkerspiece.AbstractPiece;
-
 
 public class CheckersView extends JPanel {
     // Feltvariabler
     ViewableCheckersModel view;
     ColorTheme colorTheme;
-    
-    //CheckersBoard size
+
+    // CheckersBoard size
     private static final int SIZE = 8;
-    private static final int SQUARE_SIZE = 800/8;
-    
+    private static final int SQUARE_SIZE = 800 / 8;
     
 
     public CheckersView(ViewableCheckersModel view) {
@@ -31,8 +31,8 @@ public class CheckersView extends JPanel {
         this.setBackground(Color.white);
         this.setFocusable(true);
         this.setPreferredSize(new Dimension(800, 800));
-        }
-   
+    }
+    
 
     /**
      * @param g draws the game
@@ -49,7 +49,7 @@ public class CheckersView extends JPanel {
      * 
      * @param g draws a checkersBoard
      */
-    public void drawCheckersBoard(Graphics g){
+    public void drawCheckersBoard(Graphics g) {
         for (int row = 0; row < SIZE; row++) {
             for (int col = 0; col < SIZE; col++) {
                 int x = col * SQUARE_SIZE;
@@ -66,14 +66,16 @@ public class CheckersView extends JPanel {
 
     /**
      * DrawsTheGame
+     * 
      * @param g2
      */
     public void drawGame(Graphics2D g2) {
-        if(view.getGameState() != GameState.GAME_OVER){
-            Rectangle2D rectangle = new Rectangle2D.Double(0 , 0, this.getWidth() , this.getHeight() );
-            drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
+        if (view.getGameState() != GameState.GAME_OVER) {
+            Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+            drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
+                    colorTheme);
         }
-        //TODO Draw a screen if gameover
+        // TODO Draw a screen if gameover
     }
 
     /**
@@ -84,20 +86,21 @@ public class CheckersView extends JPanel {
      * @param converter Converts a CellPosition to a Pixel
      * @param CT        Color Theme set in DefualtColorTheme
      */
-    private static void drawCells(Graphics2D g, Iterable<GridCell<AbstractPiece>> cell, CellPositionToPixelConverter converter, ColorTheme CT) {
+    private static void drawCells(Graphics2D g, Iterable<GridCell<AbstractPiece>> cell,
+            CellPositionToPixelConverter converter, ColorTheme CT) {
         for (GridCell<AbstractPiece> gridCell : cell) {
             Color color = CT.getCellColor(gridCell.value().getTeam());
             Rectangle2D rect = converter.getBoundsForCell(gridCell.pos());
-            //Variabler for å tegne en sirkel brikke
+            // Variabler for å tegne en sirkel brikke
             double centerX = rect.getCenterX();
             double centerY = rect.getCenterY();
-            double radius = rect.getWidth()/2;
-            //Converts the rectangle to a circle
-            
+            double radius = rect.getWidth() / 2;
+            // Converts the rectangle to a circle
+
             Ellipse2D circle = new Ellipse2D.Double(centerX - radius, centerY - radius, radius * 2, radius * 2);
             g.setColor(color);
             g.fill(circle);
-            if((gridCell.value().getPieceType())== 'K'){
+            if ((gridCell.value().getPieceType()) == 'K') {
                 color = Color.yellow;
                 g.setColor(color);
                 g.fill(circle);

@@ -1,9 +1,9 @@
 package no.uib.inf101.sem2;
 
-import no.uib.inf101.sem2.controller.CheckersController;
-import no.uib.inf101.sem2.model.CheckersModel;
-import no.uib.inf101.sem2.model.CheckersBoard;
-import no.uib.inf101.sem2.view.CheckersView;
+import no.uib.inf101.sem2.checkers.controller.CheckersController;
+import no.uib.inf101.sem2.checkers.model.CheckersBoard;
+import no.uib.inf101.sem2.checkers.model.CheckersModel;
+import no.uib.inf101.sem2.checkers.view.CheckersView;
 
 import javax.swing.JFrame;
 
