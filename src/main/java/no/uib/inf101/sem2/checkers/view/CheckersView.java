@@ -1,16 +1,16 @@
 package no.uib.inf101.sem2.checkers.view;
 
 import java.awt.Color;
-import java.awt.Container;
+import java.awt.Font;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import no.uib.inf101.sem2.checkers.controller.CheckersController;
 import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.grid.GridCell;
@@ -19,6 +19,7 @@ public class CheckersView extends JPanel {
     // Feltvariabler
     ViewableCheckersModel view;
     ColorTheme colorTheme;
+    //CheckersController controller;
 
     // CheckersBoard size
     private static final int SIZE = 8;
@@ -30,9 +31,9 @@ public class CheckersView extends JPanel {
         this.colorTheme = new DefaultColorTheme();
         this.setBackground(Color.white);
         this.setFocusable(true);
-        this.setPreferredSize(new Dimension(800, 800));
+        this.setPreferredSize((new Dimension(800, 800)));
     }
-    
+
 
     /**
      * @param g draws the game
@@ -43,6 +44,7 @@ public class CheckersView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         drawCheckersBoard(g2);
         drawGame(g2);
+        //System.out.println(controller.getHoverPos());  
     }
 
     /**
@@ -70,12 +72,28 @@ public class CheckersView extends JPanel {
      * @param g2
      */
     public void drawGame(Graphics2D g2) {
-        if (view.getGameState() != GameState.GAME_OVER) {
+        if (view.getGameState() == GameState.ACTIVE_GAME) {
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
             drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
                     colorTheme);
         }
-        // TODO Draw a screen if gameover
+        if(view.getGameState() == GameState.GAME_OVER){
+            Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+            g2.setColor(colorTheme.getGameoverColor());
+            g2.fill(rectangle);
+        }
+
+        if(view.getGameState() == GameState.START_SCREEN){
+            Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+            g2.setColor(colorTheme.getBackgroundColor());
+            g2.fill(rectangle);
+            //drawCheckersBoard(g2);
+
+            Font gameoverFont = new Font("Arial", Font.BOLD, 23);
+            g2.setColor(new Color(255, 239, 213));
+            g2.setFont(gameoverFont);
+            g2.drawString("Welcome to this amazing checkersgame please press 'ENTER' to start",(this.getWidth()/2)-(g2.getFontMetrics().stringWidth("Welcone to this amazing checkersgame please press 'ENTER' to start")/2), this.getHeight()/2);
+        }
     }
 
     /**

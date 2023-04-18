@@ -18,7 +18,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     public CheckersModel(CheckersBoard board) {
         this.board = board;
         this.factory = new PieceFactory();
-        this.gameState = GameState.ACTIVE_GAME;
+        this.gameState = GameState.START_SCREEN;
     }
 
     @Override
@@ -54,7 +54,10 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             }
         }
     }
-
+    /**
+     * 
+     * @return a strinified version of the board in the terminal
+     */
     public String outPutBoard() {
         String outPutBoard = "";
         for (int i = 0; i < board.rows(); i++) {
@@ -157,7 +160,9 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                 int capturedRow = oldPos.row() + ((newPos.row() - oldPos.row()) / 2);
                 int capturedCol = oldPos.col() + ((newPos.col() - oldPos.col()) / 2);
                 board.set(new CellPosition(capturedRow, capturedCol), factory.getNext('-', '-'));
+                currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
             }
+            
             // Move piece to new position and update turn count
             board.set(newPos, board.get(oldPos));
             board.set(oldPos, factory.getNext('-', '-'));
@@ -173,6 +178,9 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         return false;
     }
 
+    /**
+     * checks if a  piece is at the further most rank from its start, then promotes it to a king if true
+     */
     private void promoteToKing(){
         for (int i = 0; i < board.cols(); i++) {
             if(board.get(new CellPosition(0, i)).getTeam()== 'w'){
@@ -187,6 +195,10 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
     }
 
+    /**
+     * CHECKS if all of the white or black pieces is captured then sets
+     * the gamestate to GAME_OVER
+     */
     private void checkIfGameOver() {
         boolean whitePieceExist = false;
         boolean blackPieceExist = false;
@@ -214,5 +226,9 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         return this.gameState;
     }
 
-
+    @Override
+    public void setGameState(GameState setState) {
+        this.gameState = setState;
+    }
+    
 }

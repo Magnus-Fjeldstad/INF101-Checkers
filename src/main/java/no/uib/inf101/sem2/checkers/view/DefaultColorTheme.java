@@ -1,10 +1,9 @@
 package no.uib.inf101.sem2.checkers.view;
 import java.awt.Color;
 
-import no.uib.inf101.sem2.checkers.model.CheckersBoard;
 
 public class DefaultColorTheme implements ColorTheme {
-    CheckersBoard board;
+
 
     @Override
     public Color getCellColor(char c) {
@@ -34,5 +33,9 @@ public class DefaultColorTheme implements ColorTheme {
     public Color getBackgroundColor(){       
         return Color.pink;
     }
-    
+
+    @Override
+    public Color getGameoverColor() {
+        return new Color(0, 0, 0, 128);
+    }
 }

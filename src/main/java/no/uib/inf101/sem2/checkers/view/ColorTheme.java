@@ -27,5 +27,7 @@ public interface ColorTheme {
  */
   Color getBackgroundColor();
 
+  Color getGameoverColor();
+
   
 }

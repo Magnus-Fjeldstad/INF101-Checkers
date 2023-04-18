@@ -22,6 +22,7 @@ public class Main {
     frame.setContentPane(view);
     frame.pack();
     frame.addMouseListener(new CheckersController(model, view));
+    frame.addKeyListener(new CheckersController(model, view));
     frame.setVisible(true);
   }
 }
