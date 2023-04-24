@@ -7,7 +7,6 @@ public abstract class AbstractPiece {
     public char team;
     public CellPosition pos;
 
-
     /**
      * 
      * @return the piecetype

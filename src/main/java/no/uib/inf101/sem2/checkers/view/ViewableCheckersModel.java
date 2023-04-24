@@ -1,6 +1,5 @@
 package no.uib.inf101.sem2.checkers.view;
 
-
 import java.util.List;
 
 import no.uib.inf101.sem2.checkers.model.GameState;
@@ -22,7 +21,7 @@ public interface ViewableCheckersModel {
      */
     Iterable<GridCell<AbstractPiece>> getTilesOnBoard();
 
-     /**
+    /**
      * 
      * @return the gameStare
      */
@@ -41,13 +40,11 @@ public interface ViewableCheckersModel {
      */
     CellPosition getSelectedPos();
 
-
     /**
      * 
      * @param selectedPosition takes in the selected Position
      * @return the legalPositions that the piece can move to
      */
     List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition);
-
 
 }

@@ -31,7 +31,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
 
     /**
      * Sets the inital position of the board.
-     * Alternates by setting  white/black pieces 
+     * Alternates by setting white/black pieces
      */
     public void setInitalBoard() {
         for (int i = 0; i < board.rows(); i++) {
@@ -155,14 +155,14 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             board.set(oldPos, factory.getNext('-', '-'));
 
             // Check if another capture is available after the current move
-            
+
             checkIfGameOver();
-            promoteToKing();  
+            promoteToKing();
             boolean anotherCaptureAvailable = isCapture && hasCaptureAvailableFromPosition(newPos);
             if (!anotherCaptureAvailable) {
                 // Switch players
                 currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
-            }             
+            }
             return true;
         }
         return false;
@@ -240,7 +240,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         boolean blackPieceExist = false;
         boolean whiteLegalMove = false;
         boolean blackLegalMove = false;
-        
+
         // Check for legal moves for white pieces
         for (GridCell<AbstractPiece> gridCell : board) {
             if (gridCell.value().getTeam() == 'w') {
@@ -252,9 +252,9 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                         }
                     }
                 }
-            } 
+            }
         }
-        
+
         // Check for legal moves for black pieces
         for (GridCell<AbstractPiece> gridCell : board) {
             if (gridCell.value().getTeam() == 'b') {
@@ -266,49 +266,49 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                         }
                     }
                 }
-            } 
+            }
         }
-        
+
         if (!whitePieceExist || !blackPieceExist || !whiteLegalMove || !blackLegalMove) {
             this.gameState = GameState.GAME_OVER;
         }
     }
-    
+
     // private void checkIfGameOver() {
-    //     boolean whitePieceExist = false;
-    //     boolean blackPieceExist = false;
-    //     for (GridCell<AbstractPiece> gridCell : board) {
-    //         if (gridCell.value().getTeam() == 'w') {
-    //             whitePieceExist = true;
-    //         }
-    //     }
-    //     for (GridCell<AbstractPiece> gridCell : board) {
-    //         if (gridCell.value().getTeam() == 'b') {
-    //             blackPieceExist = true;
-    //         }
-    //     }
-    //     if (!whitePieceExist || !blackPieceExist) {
-    //         this.gameState = GameState.GAME_OVER;
-    //     }
+    // boolean whitePieceExist = false;
+    // boolean blackPieceExist = false;
+    // for (GridCell<AbstractPiece> gridCell : board) {
+    // if (gridCell.value().getTeam() == 'w') {
+    // whitePieceExist = true;
     // }
-    
-    
+    // }
+    // for (GridCell<AbstractPiece> gridCell : board) {
+    // if (gridCell.value().getTeam() == 'b') {
+    // blackPieceExist = true;
+    // }
+    // }
+    // if (!whitePieceExist || !blackPieceExist) {
+    // this.gameState = GameState.GAME_OVER;
+    // }
+    // }
+
     @Override
     public List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition) {
         List<CellPosition> legalNewPositions = new ArrayList<>();
-        AbstractPiece piece = board.get(selectedPosition);    
+        AbstractPiece piece = board.get(selectedPosition);
         if ((piece).getTeam() == currentPlayer) {
             for (int i = 0; i < board.rows(); i++) {
                 for (int j = 0; j < board.cols(); j++) {
                     if (isLegalMove(selectedPosition, new CellPosition(i, j))) {
                         legalNewPositions.add(new CellPosition(i, j));
-                    };
+                    }
+                    ;
                 }
             }
-        }               
+        }
         return legalNewPositions;
     }
-  
+
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
         return board;

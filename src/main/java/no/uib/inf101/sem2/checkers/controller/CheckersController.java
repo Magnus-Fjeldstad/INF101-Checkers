@@ -9,7 +9,7 @@ import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.view.CheckersView;
 import no.uib.inf101.sem2.grid.CellPosition;
 
-public class CheckersController implements MouseListener, java.awt.event.KeyListener  {
+public class CheckersController implements MouseListener, java.awt.event.KeyListener {
 
     private final ControllableCheckersPiece controller;
     private final CheckersView checkersView;
@@ -33,13 +33,12 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
     public void mouseClicked(MouseEvent e) {
     }
 
-
     @Override
     public void mousePressed(MouseEvent e) {
-        if(controller.getGameState() == GameState.ACTIVE_GAME){
-            int xCordGrid = (int) e.getY()/(checkersView.getHeight()/8);
-            int yCordGrid = (int) e.getX()/(checkersView.getWidth()/8);
-        
+        if (controller.getGameState() == GameState.ACTIVE_GAME) {
+            int xCordGrid = (int) e.getY() / (checkersView.getHeight() / 8);
+            int yCordGrid = (int) e.getX() / (checkersView.getWidth() / 8);
+
             oldPos = new CellPosition(xCordGrid, yCordGrid);
             this.model.setSelected(oldPos);
             checkersView.repaint();
@@ -48,16 +47,16 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if(controller.getGameState() == GameState.ACTIVE_GAME){
-            int xCordGrid = (int) e.getY()/(checkersView.getHeight()/8);
-            int yCordGrid = (int) e.getX()/(checkersView.getWidth()/8);
+        if (controller.getGameState() == GameState.ACTIVE_GAME) {
+            int xCordGrid = (int) e.getY() / (checkersView.getHeight() / 8);
+            int yCordGrid = (int) e.getX() / (checkersView.getWidth() / 8);
 
             newPos = new CellPosition(xCordGrid, yCordGrid);
-            if(controller.isLegalMove(oldPos, newPos)){
-                controller.move(oldPos, newPos);   
+            if (controller.isLegalMove(oldPos, newPos)) {
+                controller.move(oldPos, newPos);
             }
-            this.model.setSelected(newPos);          
-            checkersView.repaint();   
+            this.model.setSelected(newPos);
+            checkersView.repaint();
         }
     }
 
@@ -71,12 +70,12 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
 
     @Override
     public void keyTyped(KeyEvent e) {
-        
+
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {  
-        if(controller.getGameState()== GameState.START_SCREEN){
+    public void keyPressed(KeyEvent e) {
+        if (controller.getGameState() == GameState.START_SCREEN) {
             if (e.getKeyCode() == KeyEvent.VK_ENTER) {
                 controller.setGameState(GameState.ACTIVE_GAME);
                 checkersView.repaint();
@@ -86,5 +85,5 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
 
     @Override
     public void keyReleased(KeyEvent e) {
-    } 
+    }
 }
