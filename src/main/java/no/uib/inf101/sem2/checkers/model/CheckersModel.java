@@ -1,5 +1,8 @@
 package no.uib.inf101.sem2.checkers.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
@@ -15,7 +18,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
 
     private char currentPlayer = 'w';
     private CellPosition selectedPosition = new CellPosition(5, 4);
-    
 
     public CheckersModel(CheckersBoard board) {
         this.board = board;
@@ -76,24 +78,24 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         return outPutBoard;
     }
 
-    /**
-     * 
-     * @param oldPos oldPosition
-     * @param newPos newPostion
-     * @return true if legal move
-     */
+    @Override
     public boolean isLegalMove(CellPosition oldPos, CellPosition newPos) {
         char pieceType = board.get(oldPos).getPieceType();
+        char teamColor = board.get(oldPos).getTeam();
         boolean isKing = pieceType == 'K';
         boolean isCapture = false;
         int deltaX = newPos.row() - oldPos.row();
         int deltaY = newPos.col() - oldPos.col();
 
+        int capturedRow = oldPos.row() + (deltaX / 2);
+        int capturedCol = oldPos.col() + (deltaY / 2);
+
+
         // Check if capturing move is possible
-        if (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2) {
+        if ((deltaX == -2 && Math.abs(deltaY) == 2 && board.get(oldPos).getTeam() == 'w') ||
+                (deltaX == 2 && Math.abs(deltaY) == 2 && board.get(oldPos).getTeam() == 'b') ||
+                (Math.abs(deltaX) == 2 && Math.abs(deltaY) == 2 && board.get(oldPos).getPieceType() == 'K')) {
             // Check if there is a piece to capture
-            int capturedRow = oldPos.row() + (deltaX / 2);
-            int capturedCol = oldPos.col() + (deltaY / 2);
             if (board.get(new CellPosition(capturedRow, capturedCol)).getTeam() != board.get(oldPos).getTeam()
                     && board.get(new CellPosition(capturedRow, capturedCol)).getTeam() != '-') {
                 isCapture = true;
@@ -102,79 +104,113 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             }
         }
 
-        // Check rules based on team color
-        if (board.get(oldPos).getTeam() == 'w') {
-            if (board.get(newPos).getPieceType() != '-') {
-                return false;
-            }
-            if (!isKing) {
-                if (deltaX != -1 || Math.abs(deltaY) != 1) {
-                    if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
-                        return false;
-                    }
-                }
-            } else {
-                if (Math.abs(deltaX) != 1 || Math.abs(deltaY) != 1) {
-                    if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
-                        return false;
-                    }
-                }
-            }
-        } else if (board.get(oldPos).getTeam() == 'b') {
-            if (board.get(newPos).getPieceType() != '-') {
-                return false;
-            }
-            if (!isKing) {
-                if (deltaX != 1 || Math.abs(deltaY) != 1) {
-                    if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
-                        return false;
-                    }
-                }
-            } else {
-                if (Math.abs(deltaX) != 1 || Math.abs(deltaY) != 1) {
-                    if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
-                        return false;
-                    }
+
+        if (!isCapture && hasCaptureAvailable(board.get(oldPos).getTeam())) {
+            return false; // Mandatory capture
+        }
+
+        if (teamColor != 'w' && teamColor != 'b') {
+            return false; // Piece has no team color
+        }
+        
+        if (board.get(newPos).getPieceType() != '-') {
+            return false;
+        }
+
+        //if it is not a king rules is aplied to check that pieces can only go in one direction
+        if (!isKing) {
+            if ((teamColor == 'w' && (deltaX != -1 || Math.abs(deltaY) != 1)) ||
+                    (teamColor == 'b' && (deltaX != 1 || Math.abs(deltaY) != 1))) {
+                if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
+                    return false;
                 }
             }
         } else {
-            return false; // Piece has no team color
-        }
-
-        return true;
+            if (Math.abs(deltaX) != 1 || Math.abs(deltaY) != 1) {
+                if (!isCapture || (Math.abs(deltaX) != 2 || Math.abs(deltaY) != 2)) {
+                    return false;
+                }
+            }
+        }    
+        return true;        
     }
 
-    /**
-     * @param oldPos moves the pieces based on oldPos
-     * @param newPos moves the pieces based on newPos
-     */
-
+    @Override
     public boolean move(CellPosition oldPos, CellPosition newPos) {
         if (board.get(oldPos).getTeam() != currentPlayer) {
             return false; // It's not this player's turn
         }
 
         if (isLegalMove(oldPos, newPos)) {
-            // Capture piece if possible
-            if (Math.abs(newPos.row() - oldPos.row()) == 2 && Math.abs(newPos.col() - oldPos.col()) == 2) {
+            boolean isCapture = Math.abs(newPos.row() - oldPos.row()) == 2
+                    && Math.abs(newPos.col() - oldPos.col()) == 2;
+
+            if (isCapture) {
                 int capturedRow = oldPos.row() + ((newPos.row() - oldPos.row()) / 2);
                 int capturedCol = oldPos.col() + ((newPos.col() - oldPos.col()) / 2);
                 board.set(new CellPosition(capturedRow, capturedCol), factory.getNext('-', '-'));
-                currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
             }
 
             // Move piece to new position and update turn count
             board.set(newPos, board.get(oldPos));
             board.set(oldPos, factory.getNext('-', '-'));
-            // Switch players
-            currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
 
-            System.out.println("Current player: " + currentPlayer);
+            // Check if another capture is available after the current move
+            boolean anotherCaptureAvailable = isCapture && hasCaptureAvailableFromPosition(newPos);
+
+            if (!anotherCaptureAvailable) {
+                // Switch players
+                currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
+            }
             checkIfGameOver();
             promoteToKing();
-            System.out.println(this.gameState);
             return true;
         }
+        return false;
+    }
+
+    /**
+     * 
+     * @param team takes in a char that represents the team
+     * @return
+     */
+    private boolean hasCaptureAvailable(char team) {
+        // Check the entire board for possible captures for the specified team
+        for (int row = 0; row < board.rows(); row++) {
+            for (int col = 0; col < board.cols(); col++) {
+                CellPosition pos = new CellPosition(row, col);
+                if (board.get(pos).getTeam() == team && hasCaptureAvailableFromPosition(pos)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 
+     * @param pos takes in a cellPosition
+     * @return true if there is an avalable move from the position
+     */
+    private boolean hasCaptureAvailableFromPosition(CellPosition pos) {
+        char team = board.get(pos).getTeam();
+        if (team == '-') {
+            return false;
+        }
+
+        boolean isKing = board.get(pos).getPieceType() == 'K';
+        int[] rowDeltas = isKing ? new int[] { -2, 2 } : new int[] { team == 'w' ? -2 : 2 };
+        int[] colDeltas = { -2, 2 };
+
+        for (int rowDelta : rowDeltas) {
+            for (int colDelta : colDeltas) {
+                CellPosition newPos = new CellPosition(pos.row() + rowDelta, pos.col() + colDelta);
+                if (board.positionIsOnGrid(newPos) && isLegalMove(pos, newPos)) {
+                    return true;
+                }
+            }
+        }
+
         return false;
     }
 
@@ -217,6 +253,51 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             this.gameState = GameState.GAME_OVER;
         }
     }
+
+    // public List<Move> getLegalMoves(char team) {
+    //     List<Move> legalMoves = new ArrayList<>();
+    
+    //     // Check each piece owned by the player
+    //     for (int row = 0; row < board.rows(); row++) {
+    //         for (int col = 0; col < board.cols(); col++) {
+    //             CellPosition pos = new CellPosition(row, col);
+    //             Piece piece = board.get(pos);
+    //             if (piece.getTeam() == team) {
+    //                 // Check all possible moves for this piece
+    //                 List<CellPosition> moves = getPossibleMoves(pos);
+    //                 for (CellPosition move : moves) {
+    //                     // If the move is legal, add it to the list of legal moves
+    //                     if (isLegalMove(pos, move)) {
+    //                         legalMoves.add(new Move(pos, move));
+    //                     }
+    //                 }
+    //             }
+    //         }
+    //     }
+    
+    //     return legalMoves;
+    // }
+    
+    // private List<CellPosition> getPossibleMoves(CellPosition pos) {
+    //     List<CellPosition> moves = new ArrayList<>();
+    //     AbstractPiece piece = board.get(pos);
+    
+    //     boolean isKing = piece.getPieceType() == 'K';
+    //     int[] rowDeltas = isKing ? new int[] { -1, 1 } : new int[] { piece.getTeam() == 'w' ? -1 : 1 };
+    //     int[] colDeltas = { -1, 1 };
+    
+    //     for (int rowDelta : rowDeltas) {
+    //         for (int colDelta : colDeltas) {
+    //             CellPosition move = new CellPosition(pos.row() + rowDelta, pos.col() + colDelta);
+    //             if (board.positionIsOnGrid(move)) {
+    //                 moves.add(move);
+    //             }
+    //         }
+    //     }
+    
+    //     return moves;
+    // }
+
 
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {

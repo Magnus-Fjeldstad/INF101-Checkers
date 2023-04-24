@@ -50,7 +50,7 @@ public class CheckersView extends JPanel {
         int sizeY = getHeight();
         int squareSizeX = sizeX / 8;
         int squareSizeY = sizeY / 8;
-        //Makes alternating tiles white/black
+        // Makes alternating tiles white/black
         for (int row = 0; row < 8; row++) {
             for (int col = 0; col < 8; col++) {
                 int x = col * squareSizeX;
@@ -74,23 +74,27 @@ public class CheckersView extends JPanel {
         if (view.getGameState() == GameState.ACTIVE_GAME) {
             drawCheckersBoard(g2);
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
-            drawHoverPos(g2, view.selectedPos(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
+            drawHoverPos(g2, view.selectedPos(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
+                    colorTheme);
             drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0));
         }
+
         if (view.getGameState() == GameState.GAME_OVER) {
-            if(view.getcurrentPlayer()== 'w'){
+            if (view.getcurrentPlayer() == 'b') {
                 try {
                     Image background = ImageIO.read(new File("./src/main/resources/whiteWinn.jpg"));
-                    g2.drawImage(background, 0, 0, null);
+                    int width = getWidth();
+                    int height = getHeight();
+                    g2.drawImage(background, 0, 0, width, height, null);
                 } catch (IOException IOException) {
                     System.out.println("Image does not exist");
                 }
             }
 
-            if(view.getcurrentPlayer()== 'b'){
+            if (view.getcurrentPlayer() == 'w') {
                 try {
                     Image background = ImageIO.read(new File("./src/main/resources/blackWinn.jpg"));
-                    g2.drawImage(background, 0, 0, null);
+                    g2.drawImage(background, 0, 0, getWidth(), getHeight(), null);
                 } catch (IOException IOException) {
                     System.out.println("Image does not exist");
                 }
@@ -100,12 +104,12 @@ public class CheckersView extends JPanel {
         if (view.getGameState() == GameState.START_SCREEN) {
             try {
                 Image background = ImageIO.read(new File("./src/main/resources/startScreenF1.jpg"));
-                g2.drawImage(background, 0, 0, null);
+                g2.drawImage(background, 0, 0, getWidth(), getHeight(), null);
             } catch (IOException IOException) {
                 System.out.println("Image does not exist");
             }
-
         }
+
     }
 
     /**
@@ -126,15 +130,17 @@ public class CheckersView extends JPanel {
                 g.drawImage(image, (int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(),
                         null);
             }
-        }     
+        }
     }
 
-    private static void drawHoverPos(Graphics2D g, CellPosition hoverPos, CellPositionToPixelConverter converter, ColorTheme CT) {
+    private static void drawHoverPos(Graphics2D g, CellPosition hoverPos, CellPositionToPixelConverter converter,
+            ColorTheme CT) {
         Rectangle2D rect = converter.getBoundsForCell(hoverPos);
         Color hoverColor = CT.getHoverColor();
         g.setColor(hoverColor);
         g.fill(rect);
     }
+
     /**
      * Method to get the filepath of each piece
      * 
@@ -144,12 +150,11 @@ public class CheckersView extends JPanel {
     private static Image getImageForPiece(AbstractPiece piece) {
         if (piece.pieceType != '-') {
             String imageFolder = "./src/main/resources/";
-            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + ".png/";
-
+            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + '1' + ".png/";
             try {
                 return ImageIO.read(new File(imagePath));
             } catch (Exception IOException) {
-                System.out.println("No file named" + imageFolder);
+                System.out.println("No file named" + imagePath);
             }
         }
         return null;

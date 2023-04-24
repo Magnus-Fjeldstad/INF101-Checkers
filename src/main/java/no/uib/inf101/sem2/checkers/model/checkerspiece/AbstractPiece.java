@@ -18,7 +18,7 @@ public abstract class AbstractPiece {
 
     /**
      * 
-     * @return true if piece is White false is piece is Black
+     * @return the color represented by a char
      */
     public char getTeam() {
         return this.team;
