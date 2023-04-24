@@ -9,15 +9,7 @@ public class DefaultColorTheme implements ColorTheme {
     public Color getCellColor(char c) {
         Color color = switch (c){
             //CheckersPieceColors
-            case '-' -> new Color(0, 0, 0,0);
-            case 'w' -> Color.blue;
-            case 'b' -> Color.pink;
-
-            //KingPromoteColors
-            case 'P' -> Color.blue;
-            case 'K' -> Color.YELLOW;
-        
-        
+            case '-' -> new Color(0, 0, 0,0); 
             default -> throw new IllegalArgumentException("No available color for '" + c + "'");            
             };
         return color;
@@ -42,5 +34,10 @@ public class DefaultColorTheme implements ColorTheme {
     @Override
     public Color getHoverColor() {
         return new Color(255, 255, 0, 200);
+    }
+
+    @Override
+    public Color getLegalPosColor() {
+        return new Color(173, 216, 230);
     }
 }

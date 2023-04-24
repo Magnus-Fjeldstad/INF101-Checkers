@@ -1,6 +1,8 @@
 package no.uib.inf101.sem2.checkers.view;
 
 
+import java.util.List;
+
 import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.grid.CellPosition;
@@ -37,7 +39,15 @@ public interface ViewableCheckersModel {
      * 
      * @return the selected Position
      */
-    CellPosition selectedPos();
+    CellPosition getSelectedPos();
+
+
+    /**
+     * 
+     * @param selectedPosition takes in the selected Position
+     * @return the legalPositions that the piece can move to
+     */
+    List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition);
 
 
 }

@@ -8,6 +8,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
@@ -56,9 +57,9 @@ public class CheckersView extends JPanel {
                 int x = col * squareSizeX;
                 int y = row * squareSizeY;
                 if ((row + col) % 2 == 0) {
-                    g.setColor(Color.white);
+                    g.setColor(new Color(238,238,210));
                 } else {
-                    g.setColor(Color.BLACK);
+                    g.setColor(new Color(118,150,86));
                 }
                 g.fillRect(x, y, squareSizeX, squareSizeY);
             }
@@ -74,8 +75,10 @@ public class CheckersView extends JPanel {
         if (view.getGameState() == GameState.ACTIVE_GAME) {
             drawCheckersBoard(g2);
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
-            drawHoverPos(g2, view.selectedPos(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
+            drawHoverPos(g2, view.getSelectedPos(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
                     colorTheme);
+            drawLegalPos(g2, view.getAllLegalNewPositions(view.getSelectedPos()), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
+
             drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0));
         }
 
@@ -134,11 +137,20 @@ public class CheckersView extends JPanel {
     }
 
     private static void drawHoverPos(Graphics2D g, CellPosition hoverPos, CellPositionToPixelConverter converter,
-            ColorTheme CT) {
+            ColorTheme CT) {       
         Rectangle2D rect = converter.getBoundsForCell(hoverPos);
         Color hoverColor = CT.getHoverColor();
         g.setColor(hoverColor);
-        g.fill(rect);
+        g.fill(rect);      
+    }
+
+    private static void drawLegalPos(Graphics2D g, List<CellPosition> legalPos, CellPositionToPixelConverter converter, ColorTheme CT) {
+        for (CellPosition newPos : legalPos) {
+            Rectangle2D rect = converter.getBoundsForCell(newPos);
+            Color legalPosColor = CT.getLegalPosColor();
+            g.setColor(legalPosColor);
+            g.fill(rect);
+        }         
     }
 
     /**
@@ -150,7 +162,7 @@ public class CheckersView extends JPanel {
     private static Image getImageForPiece(AbstractPiece piece) {
         if (piece.pieceType != '-') {
             String imageFolder = "./src/main/resources/";
-            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + '1' + ".png/";
+            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + ".png/";
             try {
                 return ImageIO.read(new File(imagePath));
             } catch (Exception IOException) {

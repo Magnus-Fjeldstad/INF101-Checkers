@@ -1,6 +1,7 @@
 package no.uib.inf101.sem2.checkers.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
@@ -90,7 +91,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         int capturedRow = oldPos.row() + (deltaX / 2);
         int capturedCol = oldPos.col() + (deltaY / 2);
 
-
         // Check if capturing move is possible
         if ((deltaX == -2 && Math.abs(deltaY) == 2 && board.get(oldPos).getTeam() == 'w') ||
                 (deltaX == 2 && Math.abs(deltaY) == 2 && board.get(oldPos).getTeam() == 'b') ||
@@ -104,7 +104,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             }
         }
 
-
         if (!isCapture && hasCaptureAvailable(board.get(oldPos).getTeam())) {
             return false; // Mandatory capture
         }
@@ -112,12 +111,13 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         if (teamColor != 'w' && teamColor != 'b') {
             return false; // Piece has no team color
         }
-        
+
         if (board.get(newPos).getPieceType() != '-') {
             return false;
         }
 
-        //if it is not a king rules is aplied to check that pieces can only go in one direction
+        // if it is not a king rules is aplied to check that pieces can only go in one
+        // direction
         if (!isKing) {
             if ((teamColor == 'w' && (deltaX != -1 || Math.abs(deltaY) != 1)) ||
                     (teamColor == 'b' && (deltaX != 1 || Math.abs(deltaY) != 1))) {
@@ -131,8 +131,8 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                     return false;
                 }
             }
-        }    
-        return true;        
+        }
+        return true;
     }
 
     @Override
@@ -253,51 +253,23 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             this.gameState = GameState.GAME_OVER;
         }
     }
-
-    // public List<Move> getLegalMoves(char team) {
-    //     List<Move> legalMoves = new ArrayList<>();
     
-    //     // Check each piece owned by the player
-    //     for (int row = 0; row < board.rows(); row++) {
-    //         for (int col = 0; col < board.cols(); col++) {
-    //             CellPosition pos = new CellPosition(row, col);
-    //             Piece piece = board.get(pos);
-    //             if (piece.getTeam() == team) {
-    //                 // Check all possible moves for this piece
-    //                 List<CellPosition> moves = getPossibleMoves(pos);
-    //                 for (CellPosition move : moves) {
-    //                     // If the move is legal, add it to the list of legal moves
-    //                     if (isLegalMove(pos, move)) {
-    //                         legalMoves.add(new Move(pos, move));
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     }
+    @Override
+    public List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition) {
+        List<CellPosition> legalNewPositions = new ArrayList<>();
+        AbstractPiece piece = board.get(selectedPosition);    
+        if ((piece).getTeam() == currentPlayer) {
+            for (int i = 0; i < board.rows(); i++) {
+                for (int j = 0; j < board.cols(); j++) {
+                    if (isLegalMove(selectedPosition, new CellPosition(i, j))) {
+                        legalNewPositions.add(new CellPosition(i, j));
+                    };
+                }
+            }
+        }               
+        return legalNewPositions;
+    }
     
-    //     return legalMoves;
-    // }
-    
-    // private List<CellPosition> getPossibleMoves(CellPosition pos) {
-    //     List<CellPosition> moves = new ArrayList<>();
-    //     AbstractPiece piece = board.get(pos);
-    
-    //     boolean isKing = piece.getPieceType() == 'K';
-    //     int[] rowDeltas = isKing ? new int[] { -1, 1 } : new int[] { piece.getTeam() == 'w' ? -1 : 1 };
-    //     int[] colDeltas = { -1, 1 };
-    
-    //     for (int rowDelta : rowDeltas) {
-    //         for (int colDelta : colDeltas) {
-    //             CellPosition move = new CellPosition(pos.row() + rowDelta, pos.col() + colDelta);
-    //             if (board.positionIsOnGrid(move)) {
-    //                 moves.add(move);
-    //             }
-    //         }
-    //     }
-    
-    //     return moves;
-    // }
-
 
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
@@ -322,11 +294,12 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     public void setSelected(CellPosition selectedPosition) {
         if (currentPlayer == board.get(selectedPosition).getTeam()) {
             this.selectedPosition = selectedPosition;
+            getAllLegalNewPositions(selectedPosition);
         }
     }
 
     @Override
-    public CellPosition selectedPos() {
+    public CellPosition getSelectedPos() {
         return this.selectedPosition;
     }
 }

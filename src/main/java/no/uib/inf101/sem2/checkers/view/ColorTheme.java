@@ -39,5 +39,9 @@ public interface ColorTheme {
    */
   Color getHoverColor();
 
-  
+  /**
+   * 
+   * @return legalPosColor;
+   */
+  Color getLegalPosColor();
 }
