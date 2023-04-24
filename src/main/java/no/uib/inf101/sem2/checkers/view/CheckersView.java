@@ -6,11 +6,18 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
+import java.io.IOException;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.JPanel;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 
-import no.uib.inf101.sem2.checkers.controller.CheckersController;
+import javax.swing.JPanel;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
+
 import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.grid.GridCell;
@@ -19,21 +26,17 @@ public class CheckersView extends JPanel {
     // Feltvariabler
     ViewableCheckersModel view;
     ColorTheme colorTheme;
-    //CheckersController controller;
 
     // CheckersBoard size
     private static final int SIZE = 8;
     private static final int SQUARE_SIZE = 800 / 8;
-    
 
     public CheckersView(ViewableCheckersModel view) {
         this.view = view;
         this.colorTheme = new DefaultColorTheme();
-        this.setBackground(Color.white);
         this.setFocusable(true);
         this.setPreferredSize((new Dimension(800, 800)));
     }
-
 
     /**
      * @param g draws the game
@@ -44,7 +47,6 @@ public class CheckersView extends JPanel {
         Graphics2D g2 = (Graphics2D) g;
         drawCheckersBoard(g2);
         drawGame(g2);
-        //System.out.println(controller.getHoverPos());  
     }
 
     /**
@@ -57,7 +59,7 @@ public class CheckersView extends JPanel {
                 int x = col * SQUARE_SIZE;
                 int y = row * SQUARE_SIZE;
                 if ((row + col) % 2 == 0) {
-                    g.setColor(Color.WHITE);
+                    g.setColor(Color.white);
                 } else {
                     g.setColor(Color.BLACK);
                 }
@@ -77,24 +79,45 @@ public class CheckersView extends JPanel {
             drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0),
                     colorTheme);
         }
-        if(view.getGameState() == GameState.GAME_OVER){
+        if (view.getGameState() == GameState.GAME_OVER) {
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
             g2.setColor(colorTheme.getGameoverColor());
             g2.fill(rectangle);
+
+            Font gameOverFont = new Font("Arial", Font.BOLD, 40);
+            g2.setColor(colorTheme.getGameoverColor());
+            g2.setFont(gameOverFont);
+            g2.drawString("GAME OVER!", (this.getWidth() / 2) - (g2.getFontMetrics().stringWidth("GAME OVER!") / 2),
+                    this.getHeight() / 2);
+
         }
 
-        if(view.getGameState() == GameState.START_SCREEN){
+        if (view.getGameState() == GameState.START_SCREEN) {
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
             g2.setColor(colorTheme.getBackgroundColor());
             g2.fill(rectangle);
-            //drawCheckersBoard(g2);
+            // drawCheckersBoard(g2);
 
-            Font gameoverFont = new Font("Arial", Font.BOLD, 23);
+            Font startFont = new Font("Arial", Font.BOLD, 23);
             g2.setColor(new Color(255, 239, 213));
-            g2.setFont(gameoverFont);
-            g2.drawString("Welcome to this amazing checkersgame please press 'ENTER' to start",(this.getWidth()/2)-(g2.getFontMetrics().stringWidth("Welcone to this amazing checkersgame please press 'ENTER' to start")/2), this.getHeight()/2);
+            g2.setFont(startFont);
+            g2.drawString("Welcome to this amazing checkersgame please press 'ENTER' to start",
+                    (this.getWidth() / 2) - (g2.getFontMetrics()
+                            .stringWidth("Welcone to this amazing checkersgame please press 'ENTER' to start") / 2),
+                    this.getHeight() / 2);
         }
     }
+
+    // private static Image getImageForPiece(AbstractPiece piece) {
+    //     if (piece.pieceType != '-') {
+    //         String imagePath = piece.getTeam() + piece.getPieceType() + ".png/";
+    //         System.out.println(imagePath);
+    //         return Inf101Graphics.loadImageFromResources(imagePath);
+    //     }
+    //     return null;
+    // }
+
+    
 
     /**
      * 
@@ -109,7 +132,7 @@ public class CheckersView extends JPanel {
         for (GridCell<AbstractPiece> gridCell : cell) {
             Color color = CT.getCellColor(gridCell.value().getTeam());
             Rectangle2D rect = converter.getBoundsForCell(gridCell.pos());
-            // Variabler for å tegne en sirkel brikke
+            //Variabler for å tegne en sirkel brikke
             double centerX = rect.getCenterX();
             double centerY = rect.getCenterY();
             double radius = rect.getWidth() / 2;
@@ -119,10 +142,14 @@ public class CheckersView extends JPanel {
             g.setColor(color);
             g.fill(circle);
             if ((gridCell.value().getPieceType()) == 'K') {
-                color = Color.yellow;
+                color = color.darker().darker().darker();
                 g.setColor(color);
                 g.fill(circle);
             }
+            // Image image = getImageForPiece(gridCell.value());
+            // if(image != null){
+            //     g.drawImage(image, (int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(), null );
+            // }
 
         }
     }

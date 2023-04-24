@@ -10,7 +10,7 @@ import no.uib.inf101.sem2.grid.CellPosition;
 
 public class CheckersController implements MouseListener, java.awt.event.KeyListener  {
 
-    private final ControllableCheckersPiece controller;
+    ControllableCheckersPiece controller;
     private final CheckersView checkersView;
 
     CellPosition oldPos;
@@ -90,7 +90,7 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
     public void keyReleased(KeyEvent e) {
     }
 
-    public CellPosition getHoverPos(){
+    public CellPosition getHoverPosController(){
         return this.oldPos;
     }
     

@@ -38,4 +38,9 @@ public class DefaultColorTheme implements ColorTheme {
     public Color getGameoverColor() {
         return new Color(0, 0, 0, 128);
     }
+
+    @Override
+    public Color getHoverColor() {
+        return new Color(255, 255, 0, 50);
+    }
 }

@@ -25,4 +25,5 @@ public interface ViewableCheckersModel {
      */
 
     GameState getGameState();
+
 }

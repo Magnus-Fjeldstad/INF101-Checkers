@@ -31,4 +31,6 @@ public interface ControllableCheckersPiece {
      * @param setState sets the gamestate
      */
     public void setGameState(GameState setState);
+
+
 }
