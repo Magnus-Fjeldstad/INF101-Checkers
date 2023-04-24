@@ -21,8 +21,8 @@ public class Main {
     frame.setTitle("Checkers");
     frame.setContentPane(view);
     frame.pack();
-    frame.addMouseListener(new CheckersController(model, view));
-    frame.addKeyListener(new CheckersController(model, view));
+    frame.addMouseListener(new CheckersController(model, view, model));
+    frame.addKeyListener(new CheckersController(model, view, model));
     frame.setVisible(true);
   }
 }

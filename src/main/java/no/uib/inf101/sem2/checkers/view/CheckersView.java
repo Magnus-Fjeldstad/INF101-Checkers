@@ -14,6 +14,7 @@ import javax.swing.JPanel;
 
 import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
+import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
 
 public class CheckersView extends JPanel {
@@ -73,6 +74,7 @@ public class CheckersView extends JPanel {
         if (view.getGameState() == GameState.ACTIVE_GAME) {
             drawCheckersBoard(g2);
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());
+            drawHoverPos(g2, view.selectedPos(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0), colorTheme);
             drawCells(g2, view.getTilesOnBoard(), new CellPositionToPixelConverter(rectangle, view.getDimension(), 0));
         }
         if (view.getGameState() == GameState.GAME_OVER) {
@@ -124,10 +126,15 @@ public class CheckersView extends JPanel {
                 g.drawImage(image, (int) rect.getX(), (int) rect.getY(), (int) rect.getWidth(), (int) rect.getHeight(),
                         null);
             }
-
-        }
+        }     
     }
 
+    private static void drawHoverPos(Graphics2D g, CellPosition hoverPos, CellPositionToPixelConverter converter, ColorTheme CT) {
+        Rectangle2D rect = converter.getBoundsForCell(hoverPos);
+        Color hoverColor = CT.getHoverColor();
+        g.setColor(hoverColor);
+        g.fill(rect);
+    }
     /**
      * Method to get the filepath of each piece
      * 

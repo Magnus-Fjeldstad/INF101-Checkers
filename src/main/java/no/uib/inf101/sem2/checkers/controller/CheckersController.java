@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import no.uib.inf101.sem2.checkers.model.CheckersModel;
 import no.uib.inf101.sem2.checkers.model.GameState;
 import no.uib.inf101.sem2.checkers.view.CheckersView;
 import no.uib.inf101.sem2.grid.CellPosition;
@@ -12,13 +13,15 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
 
     ControllableCheckersPiece controller;
     private final CheckersView checkersView;
+    CheckersModel model;
 
-    CellPosition oldPos;
-    CellPosition newPos;
+    public CellPosition oldPos;
+    private CellPosition newPos;
 
-    public CheckersController(ControllableCheckersPiece controller, CheckersView checkersView) {
+    public CheckersController(ControllableCheckersPiece controller, CheckersView checkersView, CheckersModel model) {
         this.controller = controller;
         this.checkersView = checkersView;
+        this.model = model;
         checkersView.addMouseListener(this);
         checkersView.addKeyListener(this);
         checkersView.setFocusable(true);
@@ -39,6 +42,8 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
             
 
             oldPos = new CellPosition(xCordGrid, yCordGrid);
+            this.model.setSelected(oldPos);
+            checkersView.repaint();
             System.out.println("this is the oldPos" + oldPos.toString());
         }
     }
@@ -52,8 +57,9 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
             newPos = new CellPosition(xCordGrid, yCordGrid);
             System.out.println("this is the newPos" + newPos.toString());
             if(controller.isLegalMove(oldPos, newPos)){
-                controller.move(oldPos, newPos);
-            }          
+                controller.move(oldPos, newPos);   
+            }
+            this.model.setSelected(newPos);          
             checkersView.repaint();   
         }
     }
@@ -83,10 +89,9 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
 
     @Override
     public void keyReleased(KeyEvent e) {
-    }
-
-    public CellPosition getHoverPosController(){
+    } 
+    
+    public CellPosition hoverPos(){
         return this.oldPos;
     }
-    
 }

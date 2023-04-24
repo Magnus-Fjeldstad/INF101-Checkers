@@ -32,5 +32,4 @@ public interface ControllableCheckersPiece {
      */
     public void setGameState(GameState setState);
 
-
 }

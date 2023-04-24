@@ -14,6 +14,8 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     GameState gameState;
 
     private char currentPlayer = 'w';
+    private CellPosition selectedPosition = new CellPosition(5, 4);
+    
 
     public CheckersModel(CheckersBoard board) {
         this.board = board;
@@ -54,6 +56,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             }
         }
     }
+
     /**
      * 
      * @return a strinified version of the board in the terminal
@@ -72,7 +75,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
         return outPutBoard;
     }
-
 
     /**
      * 
@@ -142,13 +144,11 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         return true;
     }
 
-    
-
     /**
      * @param oldPos moves the pieces based on oldPos
      * @param newPos moves the pieces based on newPos
      */
-    
+
     public boolean move(CellPosition oldPos, CellPosition newPos) {
         if (board.get(oldPos).getTeam() != currentPlayer) {
             return false; // It's not this player's turn
@@ -162,7 +162,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                 board.set(new CellPosition(capturedRow, capturedCol), factory.getNext('-', '-'));
                 currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
             }
-            
+
             // Move piece to new position and update turn count
             board.set(newPos, board.get(oldPos));
             board.set(oldPos, factory.getNext('-', '-'));
@@ -179,17 +179,18 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     }
 
     /**
-     * checks if a  piece is at the further most rank from its start, then promotes it to a king if true
+     * checks if a piece is at the further most rank from its start, then promotes
+     * it to a king if true
      */
-    private void promoteToKing(){
+    private void promoteToKing() {
         for (int i = 0; i < board.cols(); i++) {
-            if(board.get(new CellPosition(0, i)).getTeam()== 'w'){
+            if (board.get(new CellPosition(0, i)).getTeam() == 'w') {
                 board.set(new CellPosition(0, i), factory.getNext('K', 'w'));
             }
         }
 
         for (int i = 0; i < board.cols(); i++) {
-            if(board.get(new CellPosition(7, i)).getTeam()== 'b'){
+            if (board.get(new CellPosition(7, i)).getTeam() == 'b') {
                 board.set(new CellPosition(7, i), factory.getNext('K', 'b'));
             }
         }
@@ -203,19 +204,20 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         boolean whitePieceExist = false;
         boolean blackPieceExist = false;
         for (GridCell<AbstractPiece> gridCell : board) {
-            if(gridCell.value().getTeam()=='w'){
+            if (gridCell.value().getTeam() == 'w') {
                 whitePieceExist = true;
             }
         }
         for (GridCell<AbstractPiece> gridCell : board) {
-            if(gridCell.value().getTeam()=='b'){
+            if (gridCell.value().getTeam() == 'b') {
                 blackPieceExist = true;
             }
         }
-        if(!whitePieceExist || !blackPieceExist){
+        if (!whitePieceExist || !blackPieceExist) {
             this.gameState = GameState.GAME_OVER;
         }
     }
+
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
         return board;
@@ -236,6 +238,14 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         return currentPlayer;
     }
 
+    public void setSelected(CellPosition selectedPosition) {
+        if (currentPlayer == board.get(selectedPosition).getTeam()) {
+            this.selectedPosition = selectedPosition;
+        }
+    }
 
-    
+    @Override
+    public CellPosition selectedPos() {
+        return this.selectedPosition;
+    }
 }

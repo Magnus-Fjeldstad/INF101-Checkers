@@ -41,6 +41,6 @@ public class DefaultColorTheme implements ColorTheme {
 
     @Override
     public Color getHoverColor() {
-        return new Color(255, 255, 0, 50);
+        return new Color(255, 255, 0);
     }
 }
