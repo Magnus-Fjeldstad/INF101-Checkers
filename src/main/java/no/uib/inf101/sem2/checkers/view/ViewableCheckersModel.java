@@ -26,4 +26,10 @@ public interface ViewableCheckersModel {
 
     GameState getGameState();
 
+    /**
+     * 
+     * @return a char that represent the currentplayer
+     */
+    char getcurrentPlayer();
+
 }

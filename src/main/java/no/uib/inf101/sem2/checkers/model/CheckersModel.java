@@ -229,5 +229,13 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     @Override
     public void setGameState(GameState setState) {
         this.gameState = setState;
-    }    
+    }
+
+    @Override
+    public char getcurrentPlayer() {
+        return currentPlayer;
+    }
+
+
+    
 }

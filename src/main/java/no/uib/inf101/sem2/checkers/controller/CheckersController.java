@@ -34,11 +34,9 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
     @Override
     public void mousePressed(MouseEvent e) {
         if(controller.getGameState() == GameState.ACTIVE_GAME){
-            int xCoordinat = e.getX();
-            int yCoordinat = e.getY();
-
-            int yCordGrid = (int) Math.ceil(xCoordinat / 100);
-            int xCordGrid = (int) Math.ceil(yCoordinat / 100);
+            int xCordGrid = (int) e.getY()/(checkersView.getHeight()/8);
+            int yCordGrid = (int) e.getX()/(checkersView.getWidth()/8);
+            
 
             oldPos = new CellPosition(xCordGrid, yCordGrid);
             System.out.println("this is the oldPos" + oldPos.toString());
@@ -48,17 +46,14 @@ public class CheckersController implements MouseListener, java.awt.event.KeyList
     @Override
     public void mouseReleased(MouseEvent e) {
         if(controller.getGameState() == GameState.ACTIVE_GAME){
-            int xCoordinat = e.getX();
-            int yCoordinat = e.getY();
+            int xCordGrid = (int) e.getY()/(checkersView.getHeight()/8);
+            int yCordGrid = (int) e.getX()/(checkersView.getWidth()/8);
 
-            int yCordGrid = (int) Math.ceil(xCoordinat / 100);
-            int xCordGrid = (int) Math.ceil(yCoordinat / 100);
             newPos = new CellPosition(xCordGrid, yCordGrid);
             System.out.println("this is the newPos" + newPos.toString());
             if(controller.isLegalMove(oldPos, newPos)){
                 controller.move(oldPos, newPos);
-            }
-            
+            }          
             checkersView.repaint();   
         }
     }
