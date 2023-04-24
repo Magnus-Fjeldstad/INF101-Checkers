@@ -302,7 +302,6 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
                     if (isLegalMove(selectedPosition, new CellPosition(i, j))) {
                         legalNewPositions.add(new CellPosition(i, j));
                     }
-                    ;
                 }
             }
         }
