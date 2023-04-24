@@ -1,11 +1,10 @@
-package no.uib.inf101.sem2.model;
+package no.uib.inf101.sem2.checkers.model;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 
-import no.uib.inf101.sem2.checkers.model.CheckersBoard;
-import no.uib.inf101.sem2.checkers.model.CheckersModel;
+
 import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
 import no.uib.inf101.sem2.grid.CellPosition;
 

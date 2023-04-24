@@ -1,9 +1,7 @@
 package no.uib.inf101.sem2.checkers.model;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
@@ -13,9 +11,9 @@ import no.uib.inf101.sem2.grid.GridCell;
 import no.uib.inf101.sem2.grid.GridDimension;
 
 public class CheckersModel implements ViewableCheckersModel, ControllableCheckersPiece {
-    CheckersBoard board;
-    PieceFactory factory;
-    GameState gameState;
+    private final CheckersBoard board;
+    private final PieceFactory factory;
+    private GameState gameState;
 
     private char currentPlayer = 'w';
     private CellPosition selectedPosition = new CellPosition(5, 4);
@@ -32,7 +30,8 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     }
 
     /**
-     * Sets the inital position of the board
+     * Sets the inital position of the board.
+     * Alternates by setting  white/black pieces 
      */
     public void setInitalBoard() {
         for (int i = 0; i < board.rows(); i++) {

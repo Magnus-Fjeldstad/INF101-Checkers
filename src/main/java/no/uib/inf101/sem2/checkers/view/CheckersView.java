@@ -20,8 +20,8 @@ import no.uib.inf101.sem2.grid.GridCell;
 
 public class CheckersView extends JPanel {
     // Feltvariabler
-    ViewableCheckersModel view;
-    ColorTheme colorTheme;
+    private final ViewableCheckersModel view;
+    private final ColorTheme colorTheme;
 
     public CheckersView(ViewableCheckersModel view) {
         this.view = view;
@@ -69,9 +69,9 @@ public class CheckersView extends JPanel {
     /**
      * Method that draws the game based on gameStates
      * 
-     * @param g2
+     * @param g2 paintcomponent
      */
-    public void drawGame(Graphics2D g2) {
+    private void drawGame(Graphics2D g2) {
         if (view.getGameState() == GameState.ACTIVE_GAME) {
             drawCheckersBoard(g2);
             Rectangle2D rectangle = new Rectangle2D.Double(0, 0, this.getWidth(), this.getHeight());

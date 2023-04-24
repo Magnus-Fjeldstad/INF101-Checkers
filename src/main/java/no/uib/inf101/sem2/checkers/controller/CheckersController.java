@@ -11,11 +11,11 @@ import no.uib.inf101.sem2.grid.CellPosition;
 
 public class CheckersController implements MouseListener, java.awt.event.KeyListener  {
 
-    ControllableCheckersPiece controller;
+    private final ControllableCheckersPiece controller;
     private final CheckersView checkersView;
-    CheckersModel model;
+    private final CheckersModel model;
 
-    public CellPosition oldPos;
+    private CellPosition oldPos;
     private CellPosition newPos;
 
     public CheckersController(ControllableCheckersPiece controller, CheckersView checkersView, CheckersModel model) {

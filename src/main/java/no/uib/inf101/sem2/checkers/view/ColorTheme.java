@@ -29,12 +29,6 @@ public interface ColorTheme {
 
   /**
    * 
-   * @return gameover color
-   */
-  Color getGameoverColor();
-
-  /**
-   * 
    * @return hover Color;
    */
   Color getHoverColor();

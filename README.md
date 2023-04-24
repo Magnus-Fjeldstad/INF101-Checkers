@@ -1,6 +1,3 @@
-# Checkers
-
-Se [oppgaveteksten](./OPPGAVETEKST.md) til semesteroppgave 2. Denne README -filen kan du endre som en del av dokumentasjonen til programmet, hvor du beskriver for en bruker hvordan programmet skal benyttes.
 
 # Checkers
 
@@ -8,7 +5,7 @@ Checkers, also known as Draughts, is a timeless board game that has been enjoyed
 
 ## How to Play/Run the Program
 
-To get started, all you need to do is download the repository and run the Main.java file using a Java interpreter. You will need to ensure that you have JVM and JRE installed on your machine, which you probably already have.
+To get started, all you need to do is download the repository and run the Main.java file using a Java interpreter. You will need to ensure that you have JVM and JRE installed on your machine (which you probably already have).
 
 ## Rules
 
