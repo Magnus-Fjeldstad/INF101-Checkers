@@ -135,4 +135,47 @@ public class TestCheckersBoard {
         assertEquals(expected, model.outPutBoard());
     }
 
+    @Test
+    public void testNoMoreLegalMove() {
+        CheckersBoard board = new CheckersBoard(8, 8);
+        CheckersModel model = new CheckersModel(board);
+        PieceFactory factory = new PieceFactory();
+        board.set(new CellPosition(0, 0), factory.getNext('P', 'b'));
+        board.set(new CellPosition(1, 1), factory.getNext('P', 'w'));
+        board.set(new CellPosition(2, 2), factory.getNext('P', 'w'));
+        board.set(new CellPosition(3, 3), factory.getNext('P', 'w'));
+
+        model.move(new CellPosition(3, 3), new CellPosition(2, 4));
+        model.getGameState();
+        GameState expected = GameState.GAME_OVER;
+        assertEquals(expected, model.getGameState());
+    }
+
+    @Test
+    public void testGameOverWhite() {
+        CheckersBoard board = new CheckersBoard(8, 8);
+        CheckersModel model = new CheckersModel(board);
+        PieceFactory factory = new PieceFactory();
+        board.set(new CellPosition(1, 1), factory.getNext('P', 'b'));
+        board.set(new CellPosition(2, 2), factory.getNext('P', 'w'));
+        model.move(new CellPosition(2, 2), new CellPosition(0, 0));
+        model.getGameState();
+        GameState expected = GameState.GAME_OVER;
+        assertEquals(expected, model.getGameState());
+    }
+
+    @Test
+    public void testGameOverBlack() {
+        CheckersBoard board = new CheckersBoard(8, 8);
+        CheckersModel model = new CheckersModel(board);
+        PieceFactory factory = new PieceFactory();
+        board.set(new CellPosition(1, 1), factory.getNext('P', 'b'));
+        board.set(new CellPosition(3, 3), factory.getNext('P', 'w'));
+        model.move(new CellPosition(3, 3), new CellPosition(2, 2));
+        model.move(new CellPosition(1, 1), new CellPosition(3, 3));
+        model.getGameState();
+        GameState expected = GameState.GAME_OVER;
+        assertEquals(expected, model.getGameState());
+    }
+
 }

@@ -16,3 +16,7 @@ The game ends when one player captures all of the other player's pieces. To play
 ## Credits
 
 This game was developed by Magnus Fjeldstad as a project for INF101 @Universitet i Bergen (UiB). The code is available for everyone to modify and use for their own projects or just for practice. We hope you enjoy playing Checkers and have fun competing with your friends.
+
+## Gameplay
+
+Link to youtube video showing gameplay https://youtu.be/P_eawue5fnk

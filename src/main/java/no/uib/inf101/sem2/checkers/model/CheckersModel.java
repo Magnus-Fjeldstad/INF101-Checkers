@@ -155,14 +155,14 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             board.set(oldPos, factory.getNext('-', '-'));
 
             // Check if another capture is available after the current move
+            
+            checkIfGameOver();
+            promoteToKing();  
             boolean anotherCaptureAvailable = isCapture && hasCaptureAvailableFromPosition(newPos);
-
             if (!anotherCaptureAvailable) {
                 // Switch players
                 currentPlayer = (currentPlayer == 'w') ? 'b' : 'w';
-            }
-            checkIfGameOver();
-            promoteToKing();
+            }             
             return true;
         }
         return false;
@@ -171,7 +171,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     /**
      * 
      * @param team takes in a char that represents the team
-     * @return
+     * @return if a ream has a capture avalible
      */
     private boolean hasCaptureAvailable(char team) {
         // Check the entire board for possible captures for the specified team
@@ -238,20 +238,60 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     private void checkIfGameOver() {
         boolean whitePieceExist = false;
         boolean blackPieceExist = false;
+        boolean whiteLegalMove = false;
+        boolean blackLegalMove = false;
+        
+        // Check for legal moves for white pieces
         for (GridCell<AbstractPiece> gridCell : board) {
             if (gridCell.value().getTeam() == 'w') {
                 whitePieceExist = true;
-            }
+                for (int i = 0; i < board.rows(); i++) {
+                    for (int j = 0; j < board.cols(); j++) {
+                        if (isLegalMove(gridCell.pos(), new CellPosition(i, j))) {
+                            whiteLegalMove = true;
+                        }
+                    }
+                }
+            } 
         }
+        
+        // Check for legal moves for black pieces
         for (GridCell<AbstractPiece> gridCell : board) {
             if (gridCell.value().getTeam() == 'b') {
                 blackPieceExist = true;
-            }
+                for (int i = 0; i < board.rows(); i++) {
+                    for (int j = 0; j < board.cols(); j++) {
+                        if (isLegalMove(gridCell.pos(), new CellPosition(i, j))) {
+                            blackLegalMove = true;
+                        }
+                    }
+                }
+            } 
         }
-        if (!whitePieceExist || !blackPieceExist) {
+        
+        if (!whitePieceExist || !blackPieceExist || !whiteLegalMove || !blackLegalMove) {
             this.gameState = GameState.GAME_OVER;
         }
     }
+    
+    // private void checkIfGameOver() {
+    //     boolean whitePieceExist = false;
+    //     boolean blackPieceExist = false;
+    //     for (GridCell<AbstractPiece> gridCell : board) {
+    //         if (gridCell.value().getTeam() == 'w') {
+    //             whitePieceExist = true;
+    //         }
+    //     }
+    //     for (GridCell<AbstractPiece> gridCell : board) {
+    //         if (gridCell.value().getTeam() == 'b') {
+    //             blackPieceExist = true;
+    //         }
+    //     }
+    //     if (!whitePieceExist || !blackPieceExist) {
+    //         this.gameState = GameState.GAME_OVER;
+    //     }
+    // }
+    
     
     @Override
     public List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition) {
@@ -268,8 +308,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }               
         return legalNewPositions;
     }
-    
-
+  
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
         return board;
