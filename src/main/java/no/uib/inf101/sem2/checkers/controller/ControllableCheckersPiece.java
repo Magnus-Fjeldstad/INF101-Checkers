@@ -36,6 +36,11 @@ public interface ControllableCheckersPiece {
     public void setGameState(GameState setState);
 
 
+    /**
+     * generates a random legal move and stores it in a list, then the collection shuffle
+     * randomizes it and then a random move is selected with the randInt Function
+     * Partial integration by ChatGPT
+     */
     public void aiMove();
 
 }

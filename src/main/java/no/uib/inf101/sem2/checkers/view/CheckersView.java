@@ -163,7 +163,7 @@ public class CheckersView extends JPanel {
     private static Image getImageForPiece(AbstractPiece piece) {
         if (piece.pieceType != '-') {
             String imageFolder = "./src/main/resources/";
-            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + '1'+ ".png/";
+            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + ".png/";
             try {
                 return ImageIO.read(new File(imagePath));
             } catch (Exception IOException) {

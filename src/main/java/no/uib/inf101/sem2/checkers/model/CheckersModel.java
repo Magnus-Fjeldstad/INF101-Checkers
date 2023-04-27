@@ -1,12 +1,13 @@
 package no.uib.inf101.sem2.checkers.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
-import no.uib.inf101.sem2.checkers.view.CheckersView;
 import no.uib.inf101.sem2.checkers.view.ViewableCheckersModel;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
@@ -294,26 +295,38 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
         return legalNewPositions;
     }
-
+    
     @Override
     public void aiMove() {
         if (currentPlayer == 'b') {
+            List<GridCell<AbstractPiece>> pieces = new ArrayList<>();
             for (GridCell<AbstractPiece> gridCell : board) {
                 if (gridCell.value().team == 'b') {
-                    CellPosition oldPos = gridCell.pos();
-                    for (int i = 0; i < board.rows(); i++) {
-                        for (int j = 0; j < board.cols(); j++) {
-                            if (isLegalMove(oldPos, new CellPosition(i, j))) {
-                                CellPosition selectedPos = gridCell.pos();
-                                setSelected(selectedPos);
-                                move(oldPos, new CellPosition(i, j));
-                            }
+                    pieces.add(gridCell);
+                }
+            }
+            Collections.shuffle(pieces);
+
+            for (GridCell<AbstractPiece> gridCell : pieces) {
+                CellPosition oldPos = gridCell.pos();
+                List<CellPosition> legalMoves = new ArrayList<>();
+                for (int i = 0; i < board.rows(); i++) {
+                    for (int j = 0; j < board.cols(); j++) {
+                        CellPosition newPos = new CellPosition(i, j);
+                        if (isLegalMove(oldPos, newPos)) {
+                            legalMoves.add(newPos);
                         }
                     }
+                }
+                if (!legalMoves.isEmpty()) {
+                    CellPosition newPos = legalMoves.get(new Random().nextInt(legalMoves.size()));
+                    setSelected(oldPos);
+                    move(oldPos, newPos);
                 }
             }
         }
     }
+
 
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {

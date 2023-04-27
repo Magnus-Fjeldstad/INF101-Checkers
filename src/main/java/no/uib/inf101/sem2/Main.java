@@ -14,7 +14,8 @@ public class Main {
     model.setInitalBoard();
     model.outPutBoard();
     CheckersView view = new CheckersView(model);
-    CheckersController controller = new CheckersController(model, view, model);
+
+    new CheckersController(model, view, model);
 
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -22,8 +23,6 @@ public class Main {
     frame.setTitle("Checkers");
     frame.setContentPane(view);
     frame.pack();
-    frame.addMouseListener(controller);
-    frame.addKeyListener(controller);
     frame.setVisible(true);
     
   }
