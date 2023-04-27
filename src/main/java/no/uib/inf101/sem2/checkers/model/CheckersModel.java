@@ -327,7 +327,7 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
     }
 
-
+    
     @Override
     public Iterable<GridCell<AbstractPiece>> getTilesOnBoard() {
         return board;
