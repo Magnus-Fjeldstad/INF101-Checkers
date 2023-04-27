@@ -2,9 +2,11 @@ package no.uib.inf101.sem2.checkers.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import no.uib.inf101.sem2.checkers.controller.ControllableCheckersPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.AbstractPiece;
 import no.uib.inf101.sem2.checkers.model.checkerspiece.PieceFactory;
+import no.uib.inf101.sem2.checkers.view.CheckersView;
 import no.uib.inf101.sem2.checkers.view.ViewableCheckersModel;
 import no.uib.inf101.sem2.grid.CellPosition;
 import no.uib.inf101.sem2.grid.GridCell;
@@ -35,25 +37,15 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
      */
     public void setInitalBoard() {
         for (int i = 0; i < board.rows(); i++) {
-            // draws the white pieces
+            // draws the pieces
             if (i % 2 == 0) {
-                board.set(new CellPosition(7, i), factory.getNext('P', 'w'));
-            }
-            if (i % 2 != 0) {
-                board.set(new CellPosition(6, i), factory.getNext('P', 'w'));
-            }
-            if (i % 2 == 0) {
-                board.set(new CellPosition(5, i), factory.getNext('P', 'w'));
-            }
-
-            // draws the black pieces
-            if (i % 2 != 0) {
-                board.set(new CellPosition(0, i), factory.getNext('P', 'b'));
-            }
-            if (i % 2 == 0) {
+                board.set(new CellPosition(this.getDimension().rows() - 1, i), factory.getNext('P', 'w'));
+                board.set(new CellPosition(this.getDimension().rows() - 3, i), factory.getNext('P', 'w'));
                 board.set(new CellPosition(1, i), factory.getNext('P', 'b'));
             }
             if (i % 2 != 0) {
+                board.set(new CellPosition(this.getDimension().rows() - 2, i), factory.getNext('P', 'w'));
+                board.set(new CellPosition(0, i), factory.getNext('P', 'b'));
                 board.set(new CellPosition(2, i), factory.getNext('P', 'b'));
             }
         }
@@ -155,9 +147,8 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             board.set(oldPos, factory.getNext('-', '-'));
 
             // Check if another capture is available after the current move
-
-            checkIfGameOver();
             promoteToKing();
+            checkIfGameOver();
             boolean anotherCaptureAvailable = isCapture && hasCaptureAvailableFromPosition(newPos);
             if (!anotherCaptureAvailable) {
                 // Switch players
@@ -191,20 +182,20 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
      * @param pos takes in a cellPosition
      * @return true if there is an avalable move from the position
      */
-    private boolean hasCaptureAvailableFromPosition(CellPosition pos) {
-        char team = board.get(pos).getTeam();
+    private boolean hasCaptureAvailableFromPosition(CellPosition oldPos) {
+        char team = board.get(oldPos).getTeam();
         if (team == '-') {
             return false;
         }
 
-        boolean isKing = board.get(pos).getPieceType() == 'K';
+        boolean isKing = board.get(oldPos).getPieceType() == 'K';
         int[] rowDeltas = isKing ? new int[] { -2, 2 } : new int[] { team == 'w' ? -2 : 2 };
         int[] colDeltas = { -2, 2 };
 
         for (int rowDelta : rowDeltas) {
             for (int colDelta : colDeltas) {
-                CellPosition newPos = new CellPosition(pos.row() + rowDelta, pos.col() + colDelta);
-                if (board.positionIsOnGrid(newPos) && isLegalMove(pos, newPos)) {
+                CellPosition newPos = new CellPosition(oldPos.row() + rowDelta, oldPos.col() + colDelta);
+                if (board.positionIsOnGrid(newPos) && isLegalMove(oldPos, newPos)) {
                     return true;
                 }
             }
@@ -225,8 +216,8 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
         }
 
         for (int i = 0; i < board.cols(); i++) {
-            if (board.get(new CellPosition(7, i)).getTeam() == 'b') {
-                board.set(new CellPosition(7, i), factory.getNext('K', 'b'));
+            if (board.get(new CellPosition(this.getDimension().rows() - 1, i)).getTeam() == 'b') {
+                board.set(new CellPosition(this.getDimension().rows() - 1, i), factory.getNext('K', 'b'));
             }
         }
     }
@@ -238,18 +229,25 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
     private void checkIfGameOver() {
         boolean whitePieceExist = false;
         boolean blackPieceExist = false;
-        boolean whiteLegalMove = false;
-        boolean blackLegalMove = false;
+        boolean whiteHasLegalMove = false;
+        boolean blackHasLegalMove = false;
 
         // Check for legal moves for white pieces
         for (GridCell<AbstractPiece> gridCell : board) {
-            if (gridCell.value().getTeam() == 'w') {
+            AbstractPiece piece = gridCell.value();
+            if (piece.getTeam() == 'w') {
                 whitePieceExist = true;
+                CellPosition piecePos = gridCell.pos();
                 for (int i = 0; i < board.rows(); i++) {
                     for (int j = 0; j < board.cols(); j++) {
-                        if (isLegalMove(gridCell.pos(), new CellPosition(i, j))) {
-                            whiteLegalMove = true;
+                        CellPosition newPos = new CellPosition(i, j);
+                        if (isLegalMove(piecePos, newPos)) {
+                            whiteHasLegalMove = true;
+                            break;
                         }
+                    }
+                    if (whiteHasLegalMove) {
+                        break;
                     }
                 }
             }
@@ -257,40 +255,29 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
 
         // Check for legal moves for black pieces
         for (GridCell<AbstractPiece> gridCell : board) {
-            if (gridCell.value().getTeam() == 'b') {
+            AbstractPiece piece = gridCell.value();
+            if (piece.getTeam() == 'b') {
                 blackPieceExist = true;
+                CellPosition piecePos = gridCell.pos();
                 for (int i = 0; i < board.rows(); i++) {
                     for (int j = 0; j < board.cols(); j++) {
-                        if (isLegalMove(gridCell.pos(), new CellPosition(i, j))) {
-                            blackLegalMove = true;
+                        CellPosition newPos = new CellPosition(i, j);
+                        if (isLegalMove(piecePos, newPos)) {
+                            blackHasLegalMove = true;
+                            break;
                         }
+                    }
+                    if (blackHasLegalMove) {
+                        break;
                     }
                 }
             }
         }
 
-        if (!whitePieceExist || !blackPieceExist || !whiteLegalMove || !blackLegalMove) {
+        if (!whitePieceExist || !blackPieceExist || !whiteHasLegalMove || !blackHasLegalMove) {
             this.gameState = GameState.GAME_OVER;
         }
     }
-
-    // private void checkIfGameOver() {
-    // boolean whitePieceExist = false;
-    // boolean blackPieceExist = false;
-    // for (GridCell<AbstractPiece> gridCell : board) {
-    // if (gridCell.value().getTeam() == 'w') {
-    // whitePieceExist = true;
-    // }
-    // }
-    // for (GridCell<AbstractPiece> gridCell : board) {
-    // if (gridCell.value().getTeam() == 'b') {
-    // blackPieceExist = true;
-    // }
-    // }
-    // if (!whitePieceExist || !blackPieceExist) {
-    // this.gameState = GameState.GAME_OVER;
-    // }
-    // }
 
     @Override
     public List<CellPosition> getAllLegalNewPositions(CellPosition selectedPosition) {
@@ -306,6 +293,26 @@ public class CheckersModel implements ViewableCheckersModel, ControllableChecker
             }
         }
         return legalNewPositions;
+    }
+
+    @Override
+    public void aiMove() {
+        if (currentPlayer == 'b') {
+            for (GridCell<AbstractPiece> gridCell : board) {
+                if (gridCell.value().team == 'b') {
+                    CellPosition oldPos = gridCell.pos();
+                    for (int i = 0; i < board.rows(); i++) {
+                        for (int j = 0; j < board.cols(); j++) {
+                            if (isLegalMove(oldPos, new CellPosition(i, j))) {
+                                CellPosition selectedPos = gridCell.pos();
+                                setSelected(selectedPos);
+                                move(oldPos, new CellPosition(i, j));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override

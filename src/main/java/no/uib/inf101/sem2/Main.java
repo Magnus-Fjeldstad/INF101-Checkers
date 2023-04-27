@@ -9,11 +9,12 @@ import javax.swing.JFrame;
 
 public class Main {
   public static void main(String[] args) {
-    CheckersBoard board = new CheckersBoard(8, 8);
+    CheckersBoard board = new CheckersBoard(8 , 8);
     CheckersModel model = new CheckersModel(board);
     model.setInitalBoard();
     model.outPutBoard();
     CheckersView view = new CheckersView(model);
+    CheckersController controller = new CheckersController(model, view, model);
 
     JFrame frame = new JFrame();
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -21,8 +22,9 @@ public class Main {
     frame.setTitle("Checkers");
     frame.setContentPane(view);
     frame.pack();
-    frame.addMouseListener(new CheckersController(model, view, model));
-    frame.addKeyListener(new CheckersController(model, view, model));
+    frame.addMouseListener(controller);
+    frame.addKeyListener(controller);
     frame.setVisible(true);
+    
   }
 }

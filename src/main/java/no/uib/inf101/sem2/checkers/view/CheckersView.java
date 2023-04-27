@@ -9,7 +9,6 @@ import java.awt.Image;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
-
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -49,11 +48,11 @@ public class CheckersView extends JPanel {
     private void drawCheckersBoard(Graphics g) {
         int sizeX = getWidth();
         int sizeY = getHeight();
-        int squareSizeX = sizeX / 8;
-        int squareSizeY = sizeY / 8;
+        int squareSizeX = sizeX / view.getDimension().rows();
+        int squareSizeY = sizeY / view.getDimension().cols();
         // Makes alternating tiles white/black
-        for (int row = 0; row < 8; row++) {
-            for (int col = 0; col < 8; col++) {
+        for (int row = 0; row < view.getDimension().rows(); row++) {
+            for (int col = 0; col < view.getDimension().cols(); col++) {
                 int x = col * squareSizeX;
                 int y = row * squareSizeY;
                 if ((row + col) % 2 == 0) {
@@ -107,7 +106,7 @@ public class CheckersView extends JPanel {
 
         if (view.getGameState() == GameState.START_SCREEN) {
             try {
-                Image background = ImageIO.read(new File("./src/main/resources/startScreenF1.jpg"));
+                Image background = ImageIO.read(new File("./src/main/resources/startScreenAI.jpg"));
                 g2.drawImage(background, 0, 0, getWidth(), getHeight(), null);
             } catch (IOException IOException) {
                 System.out.println("Image does not exist");
@@ -164,7 +163,7 @@ public class CheckersView extends JPanel {
     private static Image getImageForPiece(AbstractPiece piece) {
         if (piece.pieceType != '-') {
             String imageFolder = "./src/main/resources/";
-            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + ".png/";
+            String imagePath = imageFolder + piece.getTeam() + piece.getPieceType() + '1'+ ".png/";
             try {
                 return ImageIO.read(new File(imagePath));
             } catch (Exception IOException) {
